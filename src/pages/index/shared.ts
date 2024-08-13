@@ -19,3 +19,13 @@ export const options = {
     },
   ],
 };
+
+export const getOptions = () => {
+  return options;
+};
+
+export const generateRandomIndex = () => {
+  const random = Math.random();
+
+  return Math.round(random * 5);
+};
