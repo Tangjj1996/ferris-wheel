@@ -1,3 +1,6 @@
+/**
+ * 默认配置项
+ */
 export const options = {
   blocks: [{ padding: '13px', background: '#617df2' }],
   prizes: [
@@ -20,10 +23,10 @@ export const options = {
   ],
 };
 
-export const getOptions = () => {
-  return options;
-};
-
+/**
+ * 随机生成
+ * @returns
+ */
 export const generateRandomIndex = () => {
   const random = Math.random();
 
