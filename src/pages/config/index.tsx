@@ -1,11 +1,11 @@
 import { useRealTimeStore } from '@/stores/real-time-config';
 import { Button, Form, View, Textarea, FormProps } from '@tarojs/components';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { ConfigField, FieldValue } from './shared';
 
 export default function Index() {
   const { buttons, blocks, prizes, dispatchUpdate } = useRealTimeStore();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control } = useForm();
 
   // 提交
   const handleFieldSubmit: SubmitHandler<FieldValue> = (data) => {
@@ -38,28 +38,56 @@ export default function Index() {
       <View className="flex flex-col gap-y-5 p-5 h-screen overflow-auto">
         <View>
           buttons:
-          <Textarea
-            showCount
-            className="bg-slate-50 w-full p-2 mt-2"
-            {...register(ConfigField.real_time_buttons)}
-            defaultValue={JSON.stringify(buttons, null, 2)}
+          <Controller
+            control={control}
+            name={ConfigField.real_time_buttons}
+            render={({ field: { onChange, value } }) => (
+              <Textarea
+                maxlength={-1}
+                showCount
+                autoHeight
+                className="bg-slate-50 w-full p-2 mt-2"
+                value={value}
+                onInput={onChange}
+                defaultValue={JSON.stringify(buttons, null, 2)}
+              />
+            )}
           />
         </View>
         <View>
           blocks:
-          <Textarea
-            className="bg-slate-50 w-full p-2 mt-2"
-            {...register(ConfigField.real_time_blocks)}
-            defaultValue={JSON.stringify(blocks, null, 2)}
+          <Controller
+            control={control}
+            name={ConfigField.real_time_blocks}
+            render={({ field: { onChange, value } }) => (
+              <Textarea
+                maxlength={-1}
+                autoHeight
+                className="bg-slate-50 w-full p-2 mt-2"
+                value={value}
+                onInput={onChange}
+                defaultValue={JSON.stringify(blocks, null, 2)}
+              />
+            )}
           />
         </View>
         <View>
-          prizes
-          <Textarea
-            className="bg-slate-50 w-full p-2 mt-2"
-            {...register(ConfigField.real_time_prizes)}
-            defaultValue={JSON.stringify(prizes, null, 2)}
-          />
+          prizes:
+          <Controller
+            control={control}
+            name={ConfigField.real_time_prizes}
+            render={({ field: { onChange, value } }) => (
+              <Textarea
+                maxlength={-1}
+                showCount
+                autoHeight
+                className="bg-slate-50 w-full p-2 mt-2"
+                value={value}
+                onInput={onChange}
+                defaultValue={JSON.stringify(prizes, null, 2)}
+              />
+            )}
+          ></Controller>
         </View>
         <View className="flex justify-around">
           <Button formType="reset" className="w-40">
