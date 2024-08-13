@@ -1,6 +1,15 @@
 import { create } from 'zustand';
 import { options } from './const';
 
-export const useRealTimeStore = create<typeof options>((set) => ({
+export const useRealTimeStore = create<
+  typeof options & { dispatchUpdate: (value: any) => any }
+>((set) => ({
   ...options,
+  dispatchUpdate(value: any) {
+    set(() => ({
+      buttons: value?.buttons,
+      blocks: value?.blocks,
+      prizes: value?.prizes,
+    }));
+  },
 }));
