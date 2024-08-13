@@ -1,16 +1,12 @@
 import { useRef } from 'react';
-import { View, Form, Input } from '@tarojs/components';
+import { navigateTo } from '@tarojs/taro';
+import { View, Button } from '@tarojs/components';
 import { useRealTimeStore } from '@/stores/real-time-config';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
-import './index.less';
 
 export default function Index() {
   const lukyRef = useRef<any>();
-  const realTimeStore = useRealTimeStore(({ blocks, buttons, prizes }) => ({
-    blocks,
-    buttons,
-    prizes,
-  }));
+  const { blocks, buttons, prizes } = useRealTimeStore();
 
   return (
     <View>
@@ -19,9 +15,9 @@ export default function Index() {
           width="300px"
           height="300px"
           ref={lukyRef}
-          blocks={realTimeStore.blocks}
-          buttons={realTimeStore.buttons}
-          prizes={realTimeStore.prizes}
+          blocks={blocks}
+          buttons={buttons}
+          prizes={prizes}
           onStart={() => {
             // 点击抽奖按钮会触发star回调
             // 调用抽奖组件的play方法开始游戏
@@ -38,6 +34,15 @@ export default function Index() {
           }}
         />
       </View>
+      <Button
+        type="primary"
+        className="mt-10 ml-5 mr-5"
+        onClick={() => {
+          navigateTo({ url: '/pages/config/index' });
+        }}
+      >
+        查看实时配置
+      </Button>
     </View>
   );
 }
