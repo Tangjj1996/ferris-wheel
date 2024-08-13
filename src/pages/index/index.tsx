@@ -14,7 +14,7 @@ export default function Index() {
 
   return (
     <View>
-      <View>
+      <View className="mt-20">
         <LuckyWheel
           width="300px"
           height="300px"
