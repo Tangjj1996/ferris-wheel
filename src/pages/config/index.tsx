@@ -57,7 +57,7 @@ export default function Index() {
                 autoHeight
                 className="bg-slate-50 w-full p-2 mt-2"
                 value={value}
-                onInput={onChange}
+                onInput={(e) => onChange(e.detail.value)}
                 defaultValue={JSON.stringify(buttons, null, 2)}
               />
             )}
@@ -74,7 +74,7 @@ export default function Index() {
                 autoHeight
                 className="bg-slate-50 w-full p-2 mt-2"
                 value={value}
-                onInput={onChange}
+                onInput={(e) => onChange(e.detail.value)}
                 defaultValue={JSON.stringify(blocks, null, 2)}
               />
             )}
@@ -92,7 +92,7 @@ export default function Index() {
                 autoHeight
                 className="bg-slate-50 w-full p-2 mt-2"
                 value={value}
-                onInput={onChange}
+                onInput={(e) => onChange(e.detail.value)}
                 defaultValue={JSON.stringify(prizes, null, 2)}
               />
             )}
