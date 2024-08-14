@@ -1,5 +1,5 @@
 import { useRealTimeStore } from '@/stores/real-time-config';
-import { useUnload } from '@tarojs/taro';
+import { useUnload, getSystemInfoSync, showToast } from '@tarojs/taro';
 import { Input, View, Slider, Form } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
 import { useMount } from 'ahooks';
@@ -10,6 +10,7 @@ import { PrizesField } from './shared';
 export default function Index() {
   const { prizes, dispatchUpdate, getDefaultOptions } = useRealTimeStore();
   const { control, getValues, setValue } = useForm();
+  const { safeArea } = getSystemInfoSync();
 
   const setFormValue = (formValue: typeof prizes) => {
     formValue.forEach(({ key, fonts, background }) => {
@@ -43,6 +44,10 @@ export default function Index() {
 
   /** 删除 */
   const handleDelete = (_key: string) => {
+    if (prizes.length === 1) {
+      showToast({ title: '请至少保留一项', icon: 'none' });
+      return;
+    }
     const clonePrizes = cloneDeep(prizes).filter(({ key }) => key !== _key);
 
     dispatchUpdate({
@@ -74,46 +79,51 @@ export default function Index() {
 
   return (
     <Form>
-      <View className="p-5 flex flex-col gap-y-5">
-        <View className="text-lg text-gray-500">转盘项</View>
-        {prizes.map(({ key }) => (
-          <View
-            key={key}
-            className="flex w-full items-center justify-between gap-x-4"
-          >
-            <View className="flex flex-col flex-1 gap-y-3">
-              <Controller
-                control={control}
-                name={`${PrizesField.text}-${key}`}
-                render={({ field: { value, onChange } }) => (
-                  <Input value={value} onInput={onChange} />
-                )}
-              />
-              <Controller
-                control={control}
-                name={`${PrizesField.top}-${key}`}
-                render={({ field: { value, onChange } }) => (
-                  <Slider
-                    style={{ margin: 0 }}
-                    showValue
-                    value={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-              <Controller
-                control={control}
-                name={`${PrizesField.background}-${key}`}
-                render={({ field: { value, onChange } }) => (
-                  <Input value={value} onInput={onChange} />
-                )}
-              />
+      <View className="flex flex-col gap-y-5">
+        <View className="px-5 text-lg text-gray-500">转盘项</View>
+        <View
+          style={{ height: (safeArea?.height ?? 100) - 160 }}
+          className="px-5 overflow-auto"
+        >
+          {prizes.map(({ key }) => (
+            <View
+              key={key}
+              className="flex w-full items-center justify-between gap-x-4"
+            >
+              <View className="flex flex-col flex-1 gap-y-3">
+                <Controller
+                  control={control}
+                  name={`${PrizesField.text}-${key}`}
+                  render={({ field: { value, onChange } }) => (
+                    <Input value={value} onInput={onChange} />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`${PrizesField.top}-${key}`}
+                  render={({ field: { value, onChange } }) => (
+                    <Slider
+                      style={{ margin: 0 }}
+                      showValue
+                      value={value}
+                      onChange={onChange}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`${PrizesField.background}-${key}`}
+                  render={({ field: { value, onChange } }) => (
+                    <Input value={value} onInput={onChange} />
+                  )}
+                />
+              </View>
+              <View className="text-blue-500" onClick={() => handleDelete(key)}>
+                删除
+              </View>
             </View>
-            <View className="text-blue-500" onClick={() => handleDelete(key)}>
-              删除
-            </View>
-          </View>
-        ))}
+          ))}
+        </View>
         <View className="flex justify-center items-center gap-x-10">
           <View className="text-blue-500" onClick={handleReset}>
             重置
