@@ -1,116 +1,82 @@
 import { useRealTimeStore } from '@/stores/real-time-config';
-import { navigateBack, getSystemInfoSync } from '@tarojs/taro';
-import { Form, View, Textarea, FormProps, Button } from '@tarojs/components';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { ConfigField, FieldValue } from './shared';
+import { navigateBack, useUnload } from '@tarojs/taro';
+import { Button, Input, View, Slider, Form } from '@tarojs/components';
+import { Controller, useForm } from 'react-hook-form';
+import { useCreation, useMount } from 'ahooks';
+import { cloneDeep } from 'lodash';
+import { PrizesField } from './shared';
 
 export default function Index() {
-  const { buttons, blocks, prizes, dispatchUpdate, getDefaultOptions } =
-    useRealTimeStore();
-  const { handleSubmit, control } = useForm();
-  const { safeArea } = getSystemInfoSync() || {};
-
-  // 提交
-  const handleFieldSubmit: SubmitHandler<FieldValue> = (data) => {
-    try {
-      const { real_time_buttons, real_time_blocks, real_time_prizes } = data;
-      const json_real_time_buttons = real_time_buttons
-        ? JSON.parse(real_time_buttons)
-        : buttons;
-      const json_real_time_blocks = real_time_blocks
-        ? JSON.parse(real_time_blocks)
-        : blocks;
-      const json_real_time_prizes = real_time_prizes
-        ? JSON.parse(real_time_prizes)
-        : prizes;
-
-      dispatchUpdate({
-        buttons: json_real_time_buttons,
-        blocks: json_real_time_blocks,
-        prizes: json_real_time_prizes,
-      } as any);
-      navigateBack();
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const { prizes, dispatchUpdate, getDefaultOptions } = useRealTimeStore();
+  const { control, getValues, setValue } = useForm();
 
   const handleReset = () => {
     dispatchUpdate(getDefaultOptions());
+    navigateBack();
   };
 
+  const prizesContainer = useCreation(() => {
+    return prizes.map(({ fonts, background, key }) => ({
+      fonts,
+      background,
+      key,
+    }));
+  }, [prizes]);
+
+  useMount(() => {
+    prizesContainer.forEach(({ key, fonts, background }) => {
+      setValue(`${PrizesField.text}-${key}`, fonts[0].text);
+      setValue(`${PrizesField.top}-${key}`, fonts[0].top);
+      setValue(`${PrizesField.background}-${key}`, background);
+    });
+  });
+
+  // 没找到 beforeRouterLeave 钩子，暂时用这个
+  useUnload(() => {
+    const formValue = getValues();
+    const clonePrizes = cloneDeep(prizes);
+
+    clonePrizes.forEach(({ fonts, background, key }) => {
+      background = formValue[`${PrizesField.background}-${key}`];
+      fonts[0].text = formValue[`${PrizesField.text}-${key}`];
+      fonts[0].top = formValue[`${PrizesField.top}-${key}`];
+    });
+
+    dispatchUpdate({
+      prizes: clonePrizes,
+    });
+  });
+
   return (
-    <Form
-      onSubmit={
-        handleSubmit(handleFieldSubmit) as unknown as FormProps['onSubmit']
-      }
-    >
-      <View
-        className="flex flex-col gap-y-5 p-5 overflow-y-auto"
-        style={{ height: (safeArea?.height ?? 100) - 96 }}
-      >
-        <View>
-          buttons:
+    <Form>
+      <View>转盘项</View>
+      {prizesContainer.map(({ key }) => (
+        <View key={key}>
           <Controller
             control={control}
-            name={ConfigField.real_time_buttons}
-            render={({ field: { onChange, value } }) => (
-              <Textarea
-                maxlength={-1}
-                showCount
-                autoHeight
-                className="bg-slate-50 w-full p-2 mt-2"
-                value={value}
-                onInput={(e) => onChange(e.detail.value)}
-                defaultValue={JSON.stringify(buttons, null, 2)}
-              />
+            name={`${PrizesField.text}-${key}`}
+            render={({ field: { value, onChange } }) => (
+              <Input value={value} onInput={onChange} />
+            )}
+          />
+          <Controller
+            control={control}
+            name={`${PrizesField.top}-${key}`}
+            render={({ field: { value, onChange } }) => (
+              <Slider showValue value={parseInt(value)} onChange={onChange} />
+            )}
+          />
+          <Controller
+            control={control}
+            name={`${PrizesField.background}-${key}`}
+            render={({ field: { value, onChange } }) => (
+              <Input value={value} onInput={onChange} />
             )}
           />
         </View>
-        <View>
-          blocks:
-          <Controller
-            control={control}
-            name={ConfigField.real_time_blocks}
-            render={({ field: { onChange, value } }) => (
-              <Textarea
-                maxlength={-1}
-                autoHeight
-                className="bg-slate-50 w-full p-2 mt-2"
-                value={value}
-                onInput={(e) => onChange(e.detail.value)}
-                defaultValue={JSON.stringify(blocks, null, 2)}
-              />
-            )}
-          />
-        </View>
-        <View>
-          prizes:
-          <Controller
-            control={control}
-            name={ConfigField.real_time_prizes}
-            render={({ field: { onChange, value } }) => (
-              <Textarea
-                maxlength={-1}
-                showCount
-                autoHeight
-                className="bg-slate-50 w-full p-2 mt-2"
-                value={value}
-                onInput={(e) => onChange(e.detail.value)}
-                defaultValue={JSON.stringify(prizes, null, 2)}
-              />
-            )}
-          ></Controller>
-        </View>
-      </View>
-      <View className="flex justify-around">
-        <Button className="w-40" onClick={handleReset}>
-          重置
-        </Button>
-        <Button formType="submit" className="w-40">
-          提交
-        </Button>
-      </View>
+      ))}
+      <View></View>
+      <Button onClick={handleReset}>重置</Button>
     </Form>
   );
 }
