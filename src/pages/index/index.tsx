@@ -1,11 +1,10 @@
 import { useRef } from 'react';
 import { navigateTo } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View, Button } from '@tarojs/components';
 import { useRealTimeStore } from '@/stores/real-time-config';
 import { generateRandomIndex } from '@/stores/const';
 import { useBoolean } from 'ahooks';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
-import { Button } from '@/components';
 
 export default function Index() {
   const lukyRef = useRef<any>();

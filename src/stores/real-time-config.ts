@@ -9,11 +9,18 @@ export const useRealTimeStore = create<
 >((set) => ({
   ...options,
   dispatchUpdate(value: any) {
-    set(() => ({
-      buttons: value?.buttons,
-      blocks: value?.blocks,
-      prizes: value?.prizes,
-    }));
+    const record = {};
+    if (value?.buttons) {
+      record['buttons'] = value?.buttons;
+    }
+    if (value?.blocks) {
+      record['blocks'] = value?.blocks;
+    }
+    if (value?.prizes) {
+      record['prizes'] = value?.prizes;
+    }
+
+    set(() => record);
   },
   getDefaultOptions: () => options,
 }));
