@@ -1,10 +1,16 @@
 import { useRealTimeStore } from '@/stores/real-time-config';
-import { useDidHide, getSystemInfoSync, showToast } from '@tarojs/taro';
-import { Input, View, Slider, Form } from '@tarojs/components';
+import {
+  useDidHide,
+  getSystemInfoSync,
+  showToast,
+  vibrateShort,
+} from '@tarojs/taro';
+import { Input, View, Form, Image } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
 import { useMount } from 'ahooks';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid/non-secure';
+import circleMinusPath from '@/assets/icon/circle-minus.svg';
 import { PrizesField, WheelTitleField } from './shared';
 
 export default function Index() {
@@ -57,6 +63,7 @@ export default function Index() {
       prizes: clonePrizes,
     });
     setFormValue(clonePrizes);
+    vibrateShort();
   };
 
   useMount(() => {
@@ -95,23 +102,34 @@ export default function Index() {
         </View>
         <View className="px-5 text-lg text-gray-500">转盘项</View>
         <View
-          style={{ height: (safeArea?.height ?? 100) - 160 }}
+          style={{ height: (safeArea?.height ?? 100) - 300 }}
           className="px-5 overflow-auto"
         >
+          <View className="flex items-center">
+            <View className="w-2/3">名称</View>
+            <View className="w-1/3">色块</View>
+          </View>
           {prizes.map(({ key }) => (
             <View className="flex items-center h-10" key={key}>
               <Controller
                 control={control}
                 name={`${PrizesField.text}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <Input value={value} onInput={onChange} />
+                  <View className="flex items-center w-2/3 gap-x-4">
+                    <Image
+                      src={circleMinusPath}
+                      style={{ width: 24, height: 24 }}
+                      onClick={() => handleDelete(key)}
+                    />
+                    <Input value={value} onInput={onChange} />
+                  </View>
                 )}
               />
               <Controller
                 control={control}
                 name={`${PrizesField.background}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <Input value={value} onInput={onChange} />
+                  <Input className="w-1/3" value={value} onInput={onChange} />
                 )}
               />
             </View>
