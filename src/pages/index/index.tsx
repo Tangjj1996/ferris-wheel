@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { vibrateLong } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { useRealTimeStore } from '@/stores/real-time-config';
 import { generateRandomIndex } from '@/stores/real-time-config/const';
@@ -24,11 +25,8 @@ export default function Index() {
           // 点击抽奖按钮会触发star回调
           // 调用抽奖组件的play方法开始游戏
           lukyRef.current?.play?.();
-          // 模拟调用接口异步抽奖
-          setTimeout(() => {
-            // 调用stop停止旋转并传递中奖索引
-            lukyRef.current?.stop?.(generateRandomIndex());
-          }, 100);
+          vibrateLong();
+          lukyRef.current?.stop?.(generateRandomIndex());
         }}
         onEnd={(prize) => {
           // 抽奖结束会触发end回调
