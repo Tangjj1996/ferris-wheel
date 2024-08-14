@@ -1,10 +1,11 @@
 import { useRef } from 'react';
 import { navigateTo } from '@tarojs/taro';
-import { View, Button } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { useRealTimeStore } from '@/stores/real-time-config';
 import { generateRandomIndex } from '@/stores/const';
 import { useBoolean } from 'ahooks';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
+import { Button } from '@/components';
 
 export default function Index() {
   const lukyRef = useRef<any>();
@@ -41,8 +42,7 @@ export default function Index() {
       </View>
       <Button
         disabled={isWheeling}
-        type="primary"
-        className="mt-10 ml-5 mr-5"
+        className="mt-10"
         onClick={() => {
           navigateTo({ url: '/pages/config/index' });
         }}
