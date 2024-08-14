@@ -10,11 +10,6 @@ export default function Index() {
   const { prizes, dispatchUpdate, getDefaultOptions } = useRealTimeStore();
   const { control, getValues, setValue } = useForm();
 
-  const handleReset = () => {
-    dispatchUpdate(getDefaultOptions());
-    navigateBack();
-  };
-
   const prizesContainer = useCreation(() => {
     return prizes.map(({ fonts, background, key }) => ({
       fonts,
@@ -22,6 +17,17 @@ export default function Index() {
       key,
     }));
   }, [prizes]);
+
+  const handleReset = () => {
+    const options = getDefaultOptions();
+    dispatchUpdate(options);
+    prizesContainer.forEach(({ key, fonts, background }) => {
+      setValue(`${PrizesField.text}-${key}`, fonts[0].text);
+      setValue(`${PrizesField.top}-${key}`, fonts[0].top);
+      setValue(`${PrizesField.background}-${key}`, background);
+    });
+    navigateBack();
+  };
 
   useMount(() => {
     prizesContainer.forEach(({ key, fonts, background }) => {
