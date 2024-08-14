@@ -23,7 +23,7 @@ export default function Index() {
     dispatchUpdate(options);
     prizesContainer.forEach(({ key, fonts, background }) => {
       setValue(`${PrizesField.text}-${key}`, fonts[0].text);
-      setValue(`${PrizesField.top}-${key}`, fonts[0].top);
+      setValue(`${PrizesField.top}-${key}`, parseInt(fonts[0].top));
       setValue(`${PrizesField.background}-${key}`, background);
     });
     navigateBack();
@@ -32,7 +32,7 @@ export default function Index() {
   useMount(() => {
     prizesContainer.forEach(({ key, fonts, background }) => {
       setValue(`${PrizesField.text}-${key}`, fonts[0].text);
-      setValue(`${PrizesField.top}-${key}`, fonts[0].top);
+      setValue(`${PrizesField.top}-${key}`, parseInt(fonts[0].top));
       setValue(`${PrizesField.background}-${key}`, background);
     });
   });
@@ -45,7 +45,7 @@ export default function Index() {
     clonePrizes.forEach(({ fonts, background, key }) => {
       background = formValue[`${PrizesField.background}-${key}`];
       fonts[0].text = formValue[`${PrizesField.text}-${key}`];
-      fonts[0].top = formValue[`${PrizesField.top}-${key}`];
+      fonts[0].top = `${formValue[`${PrizesField.top}-${key}`]}%`;
     });
 
     dispatchUpdate({
@@ -55,34 +55,41 @@ export default function Index() {
 
   return (
     <Form>
-      <View>转盘项</View>
-      {prizesContainer.map(({ key }) => (
-        <View key={key}>
-          <Controller
-            control={control}
-            name={`${PrizesField.text}-${key}`}
-            render={({ field: { value, onChange } }) => (
-              <Input value={value} onInput={onChange} />
-            )}
-          />
-          <Controller
-            control={control}
-            name={`${PrizesField.top}-${key}`}
-            render={({ field: { value, onChange } }) => (
-              <Slider showValue value={parseInt(value)} onChange={onChange} />
-            )}
-          />
-          <Controller
-            control={control}
-            name={`${PrizesField.background}-${key}`}
-            render={({ field: { value, onChange } }) => (
-              <Input value={value} onInput={onChange} />
-            )}
-          />
-        </View>
-      ))}
-      <View></View>
-      <Button onClick={handleReset}>重置</Button>
+      <View className="p-5 flex flex-col gap-y-5">
+        <View className="text-lg text-gray-500">转盘项</View>
+        {prizesContainer.map(({ key }) => (
+          <View key={key} className="flex flex-col gap-y-3">
+            <Controller
+              control={control}
+              name={`${PrizesField.text}-${key}`}
+              render={({ field: { value, onChange } }) => (
+                <Input value={value} onInput={onChange} />
+              )}
+            />
+            <Controller
+              control={control}
+              name={`${PrizesField.top}-${key}`}
+              render={({ field: { value, onChange } }) => (
+                <Slider
+                  style={{ margin: 0 }}
+                  showValue
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name={`${PrizesField.background}-${key}`}
+              render={({ field: { value, onChange } }) => (
+                <Input value={value} onInput={onChange} />
+              )}
+            />
+          </View>
+        ))}
+        <View></View>
+        <Button onClick={handleReset}>重置</Button>
+      </View>
     </Form>
   );
 }
