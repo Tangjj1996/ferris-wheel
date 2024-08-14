@@ -16,7 +16,6 @@ export default function Index() {
   const setFormValue = (formValue: typeof prizes, title?: string) => {
     formValue.forEach(({ key, fonts, background }) => {
       setValue(`${PrizesField.text}-${key}`, fonts[0].text);
-      setValue(`${PrizesField.top}-${key}`, parseInt(fonts[0].top));
       setValue(`${PrizesField.background}-${key}`, background);
     });
     if (title) {
@@ -73,7 +72,6 @@ export default function Index() {
       clonePrizes[index].background =
         formValue[`${PrizesField.background}-${key}`];
       fonts[0].text = formValue[`${PrizesField.text}-${key}`];
-      fonts[0].top = `${formValue[`${PrizesField.top}-${key}`]}%`;
     });
 
     dispatchUpdate({
@@ -86,54 +84,36 @@ export default function Index() {
     <Form>
       <View className="flex flex-col gap-y-5">
         <View className="px-5 text-lg text-gray-500">转盘名称</View>
-        <Controller
-          control={control}
-          name={WheelTitleField}
-          render={({ field: { value, onChange } }) => (
-            <Input value={value} onInput={onChange} />
-          )}
-        />
+        <View className="px-5">
+          <Controller
+            control={control}
+            name={WheelTitleField}
+            render={({ field: { value, onChange } }) => (
+              <Input value={value} onInput={onChange} />
+            )}
+          />
+        </View>
         <View className="px-5 text-lg text-gray-500">转盘项</View>
         <View
           style={{ height: (safeArea?.height ?? 100) - 160 }}
           className="px-5 overflow-auto"
         >
           {prizes.map(({ key }) => (
-            <View
-              key={key}
-              className="flex w-full items-center justify-between gap-x-4"
-            >
-              <View className="flex flex-col flex-1 gap-y-3">
-                <Controller
-                  control={control}
-                  name={`${PrizesField.text}-${key}`}
-                  render={({ field: { value, onChange } }) => (
-                    <Input value={value} onInput={onChange} />
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name={`${PrizesField.top}-${key}`}
-                  render={({ field: { value, onChange } }) => (
-                    <Slider
-                      style={{ margin: 0 }}
-                      showValue
-                      value={value}
-                      onChange={onChange}
-                    />
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name={`${PrizesField.background}-${key}`}
-                  render={({ field: { value, onChange } }) => (
-                    <Input value={value} onInput={onChange} />
-                  )}
-                />
-              </View>
-              <View className="text-blue-500" onClick={() => handleDelete(key)}>
-                删除
-              </View>
+            <View className="flex items-center h-10" key={key}>
+              <Controller
+                control={control}
+                name={`${PrizesField.text}-${key}`}
+                render={({ field: { value, onChange } }) => (
+                  <Input value={value} onInput={onChange} />
+                )}
+              />
+              <Controller
+                control={control}
+                name={`${PrizesField.background}-${key}`}
+                render={({ field: { value, onChange } }) => (
+                  <Input value={value} onInput={onChange} />
+                )}
+              />
             </View>
           ))}
         </View>
