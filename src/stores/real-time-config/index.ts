@@ -1,15 +1,19 @@
 import { create } from 'zustand';
-import { options } from './const';
+import { options, wheelTitle } from './const';
 
-export const useRealTimeStore = create<
-  typeof options & {
-    dispatchUpdate: (value: any) => any;
-    getDefaultOptions: () => any;
-  }
->((set) => ({
+type State = typeof options & { wheelTitle: string };
+
+type Action = {
+  dispatchUpdate: (value: State) => void;
+  getDefaultOptions: () => typeof options;
+};
+
+export const useRealTimeStore = create<State & Action>((set) => ({
+  wheelTitle,
   ...options,
-  dispatchUpdate(value: any) {
+  dispatchUpdate(value) {
     const record = {};
+
     if (value?.buttons) {
       record['buttons'] = value?.buttons;
     }

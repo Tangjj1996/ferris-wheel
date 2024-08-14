@@ -1,5 +1,7 @@
 import { nanoid } from 'nanoid/non-secure';
 
+export const wheelTitle = '中午吃什么🍽️';
+
 /**
  * 默认配置项
  */
@@ -44,7 +46,7 @@ export const options = {
       radius: '40px',
       background: '#869cfa',
       pointer: true,
-      fonts: [{ text: '中午\n吃啥', top: '-20px' }],
+      fonts: [{ text: '启动', top: '-20px' }],
     },
   ],
 };

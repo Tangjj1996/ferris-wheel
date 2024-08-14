@@ -1,5 +1,5 @@
 import { useRealTimeStore } from '@/stores/real-time-config';
-import { useUnload, getSystemInfoSync, showToast } from '@tarojs/taro';
+import { useDidHide, getSystemInfoSync, showToast } from '@tarojs/taro';
 import { Input, View, Slider, Form } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
 import { useMount } from 'ahooks';
@@ -44,7 +44,7 @@ export default function Index() {
 
   /** 删除 */
   const handleDelete = (_key: string) => {
-    if (prizes.length === 1) {
+    if (prizes.length === 2) {
       showToast({ title: '请至少保留一项', icon: 'none' });
       return;
     }
@@ -61,7 +61,7 @@ export default function Index() {
   });
 
   // 没找到 beforeRouterLeave 钩子，暂时用这个
-  useUnload(() => {
+  useDidHide(() => {
     const formValue = getValues();
     const clonePrizes = cloneDeep(prizes);
 
