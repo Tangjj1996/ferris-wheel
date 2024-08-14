@@ -4,15 +4,15 @@ import { options, wheelTitle } from './const';
 type State = typeof options & { wheelTitle: string };
 
 type Action = {
-  dispatchUpdate: (value: State) => void;
-  getDefaultOptions: () => typeof options;
+  dispatchUpdate: (value: Partial<State>) => void;
+  getDefaultOptions: () => State;
 };
 
 export const useRealTimeStore = create<State & Action>((set) => ({
-  wheelTitle,
   ...options,
+  wheelTitle,
   dispatchUpdate(value) {
-    const record = {};
+    const record: Partial<State> = {};
 
     if (value?.buttons) {
       record['buttons'] = value?.buttons;
@@ -23,8 +23,11 @@ export const useRealTimeStore = create<State & Action>((set) => ({
     if (value?.prizes) {
       record['prizes'] = value?.prizes;
     }
+    if (value.wheelTitle) {
+      record['wheelTitle'] = value.wheelTitle;
+    }
 
     set(() => record);
   },
-  getDefaultOptions: () => options,
+  getDefaultOptions: () => Object.assign(options, { wheelTitle }),
 }));

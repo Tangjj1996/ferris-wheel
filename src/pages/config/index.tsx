@@ -5,26 +5,30 @@ import { Controller, useForm } from 'react-hook-form';
 import { useMount } from 'ahooks';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid/non-secure';
-import { PrizesField } from './shared';
+import { PrizesField, WheelTitleField } from './shared';
 
 export default function Index() {
-  const { prizes, dispatchUpdate, getDefaultOptions } = useRealTimeStore();
+  const { prizes, dispatchUpdate, getDefaultOptions, wheelTitle } =
+    useRealTimeStore();
   const { control, getValues, setValue } = useForm();
   const { safeArea } = getSystemInfoSync();
 
-  const setFormValue = (formValue: typeof prizes) => {
+  const setFormValue = (formValue: typeof prizes, title?: string) => {
     formValue.forEach(({ key, fonts, background }) => {
       setValue(`${PrizesField.text}-${key}`, fonts[0].text);
       setValue(`${PrizesField.top}-${key}`, parseInt(fonts[0].top));
       setValue(`${PrizesField.background}-${key}`, background);
     });
+    if (title) {
+      setValue(WheelTitleField, title);
+    }
   };
 
   /** 重置 */
   const handleReset = () => {
     const options = getDefaultOptions();
     dispatchUpdate(options);
-    setFormValue(options?.prizes);
+    setFormValue(options?.prizes, options.wheelTitle);
   };
 
   /** 新增 */
@@ -57,7 +61,7 @@ export default function Index() {
   };
 
   useMount(() => {
-    setFormValue(prizes);
+    setFormValue(prizes, wheelTitle);
   });
 
   // 没找到 beforeRouterLeave 钩子，暂时用这个
@@ -74,12 +78,21 @@ export default function Index() {
 
     dispatchUpdate({
       prizes: clonePrizes,
+      wheelTitle: formValue[WheelTitleField],
     });
   });
 
   return (
     <Form>
       <View className="flex flex-col gap-y-5">
+        <View className="px-5 text-lg text-gray-500">转盘名称</View>
+        <Controller
+          control={control}
+          name={WheelTitleField}
+          render={({ field: { value, onChange } }) => (
+            <Input value={value} onInput={onChange} />
+          )}
+        />
         <View className="px-5 text-lg text-gray-500">转盘项</View>
         <View
           style={{ height: (safeArea?.height ?? 100) - 160 }}
