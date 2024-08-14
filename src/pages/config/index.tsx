@@ -11,6 +11,7 @@ import { useMount } from 'ahooks';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid/non-secure';
 import circleMinusPath from '@/assets/icon/circle-minus.svg';
+import { PrizesBg } from '@/stores/real-time-config/const';
 import { PrizesField, WheelTitleField } from './shared';
 
 export default function Index() {
@@ -42,7 +43,7 @@ export default function Index() {
     clonePrizes.push({
       key: nanoid(),
       fonts: [{ text: '番茄炒蛋🍅', top: '10%' }],
-      background: '#e9e8fe',
+      background: clonePrizes.length % 2 === 0 ? PrizesBg.odd : PrizesBg.even,
     });
 
     dispatchUpdate({
@@ -54,7 +55,7 @@ export default function Index() {
   /** 删除 */
   const handleDelete = (_key: string) => {
     if (prizes.length === 2) {
-      showToast({ title: '请至少保留一项', icon: 'none' });
+      showToast({ title: '请至少保留两项', icon: 'none' });
       return;
     }
     const clonePrizes = cloneDeep(prizes).filter(({ key }) => key !== _key);
@@ -96,7 +97,11 @@ export default function Index() {
             control={control}
             name={WheelTitleField}
             render={({ field: { value, onChange } }) => (
-              <Input value={value} onInput={onChange} />
+              <Input
+                value={value}
+                onInput={onChange}
+                className="border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
             )}
           />
         </View>
@@ -106,11 +111,11 @@ export default function Index() {
           className="px-5 overflow-auto"
         >
           <View className="flex items-center">
-            <View className="w-2/3">名称</View>
-            <View className="w-1/3">色块</View>
+            <View className="w-2/3">区块</View>
+            <View className="w-1/3">颜色</View>
           </View>
           {prizes.map(({ key }) => (
-            <View className="flex items-center h-10" key={key}>
+            <View className="flex items-center gap-x-4 h-14" key={key}>
               <Controller
                 control={control}
                 name={`${PrizesField.text}-${key}`}
@@ -121,7 +126,11 @@ export default function Index() {
                       style={{ width: 24, height: 24 }}
                       onClick={() => handleDelete(key)}
                     />
-                    <Input value={value} onInput={onChange} />
+                    <Input
+                      className="border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      value={value}
+                      onInput={onChange}
+                    />
                   </View>
                 )}
               />
@@ -129,7 +138,11 @@ export default function Index() {
                 control={control}
                 name={`${PrizesField.background}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <Input className="w-1/3" value={value} onInput={onChange} />
+                  <Input
+                    className="w-1/3 border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    value={value}
+                    onInput={onChange}
+                  />
                 )}
               />
             </View>
