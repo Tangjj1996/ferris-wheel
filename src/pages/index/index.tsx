@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { navigateTo } from '@tarojs/taro';
 import { View, Button } from '@tarojs/components';
 import { useRealTimeStore } from '@/stores/real-time-config';
+import { generateRandomIndex } from '@/stores/const';
 import { useBoolean } from 'ahooks';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
 
@@ -29,7 +30,7 @@ export default function Index() {
             // 模拟调用接口异步抽奖
             setTimeout(() => {
               // 调用stop停止旋转并传递中奖索引
-              lukyRef.current?.stop?.(0);
+              lukyRef.current?.stop?.(generateRandomIndex());
             }, 100);
           }}
           onEnd={(prize) => {
