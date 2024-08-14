@@ -1,5 +1,5 @@
 import { useRealTimeStore } from '@/stores/real-time-config';
-import { navigateBack } from '@tarojs/taro';
+import { navigateBack, getSystemInfoSync } from '@tarojs/taro';
 import { Button, Form, View, Textarea, FormProps } from '@tarojs/components';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { ConfigField, FieldValue } from './shared';
@@ -8,6 +8,7 @@ export default function Index() {
   const { buttons, blocks, prizes, dispatchUpdate, getDefaultOptions } =
     useRealTimeStore();
   const { handleSubmit, control } = useForm();
+  const { safeArea } = getSystemInfoSync() || {};
 
   // 提交
   const handleFieldSubmit: SubmitHandler<FieldValue> = (data) => {
@@ -44,7 +45,10 @@ export default function Index() {
         handleSubmit(handleFieldSubmit) as unknown as FormProps['onSubmit']
       }
     >
-      <View className="flex flex-col gap-y-5 p-5 h-screen overflow-auto">
+      <View
+        className="flex flex-col gap-y-5 p-5 overflow-y-auto"
+        style={{ height: (safeArea?.height ?? 100) - 96 }}
+      >
         <View>
           buttons:
           <Controller
@@ -98,14 +102,14 @@ export default function Index() {
             )}
           ></Controller>
         </View>
-        <View className="flex justify-around">
-          <Button className="w-40" onClick={handleReset}>
-            重置
-          </Button>
-          <Button type="primary" formType="submit" className="w-40">
-            提交
-          </Button>
-        </View>
+      </View>
+      <View className="flex justify-around">
+        <Button className="w-40" onClick={handleReset}>
+          重置
+        </Button>
+        <Button type="primary" formType="submit" className="w-40">
+          提交
+        </Button>
       </View>
     </Form>
   );
