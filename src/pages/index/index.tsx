@@ -12,8 +12,8 @@ export default function Index() {
     useBoolean(false);
 
   return (
-    <View>
-      <View className="mt-20">
+    <View className="flex flex-col items-center justify-center h-full">
+      <View>
         <LuckyWheel
           width="300px"
           height="300px"
