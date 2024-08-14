@@ -1,8 +1,7 @@
 import { useRealTimeStore } from '@/stores/real-time-config';
 import { navigateBack, getSystemInfoSync } from '@tarojs/taro';
-import { Form, View, Textarea, FormProps } from '@tarojs/components';
+import { Form, View, Textarea, FormProps, Button } from '@tarojs/components';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Button } from '@/components';
 import { ConfigField, FieldValue } from './shared';
 
 export default function Index() {
@@ -108,7 +107,7 @@ export default function Index() {
         <Button className="w-40" onClick={handleReset}>
           重置
         </Button>
-        <Button type="submit" className="w-40">
+        <Button formType="submit" className="w-40">
           提交
         </Button>
       </View>
