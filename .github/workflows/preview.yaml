@@ -1,4 +1,4 @@
-name: 提交 Commit 预览小程序
+name: 预览小程序
 on:
   push:
     branches:
