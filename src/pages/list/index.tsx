@@ -1,9 +1,9 @@
-import { useWheelList } from '@/stores/wheel-list';
+import { useWheelListStore } from '@/stores/wheel-list';
 import { View } from '@tarojs/components';
 import { switchTab } from '@tarojs/taro';
 
 export default function Index() {
-  const { wheelList, dispatchSelectedWheel } = useWheelList();
+  const { wheelList, dispatchSelectedWheel } = useWheelListStore();
 
   const handleClick = (key: string) => {
     dispatchSelectedWheel(key);

@@ -2,12 +2,12 @@ import { useRef } from 'react';
 import { vibrateLong } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { useRealTimeStore } from '@/stores/real-time-config';
-import { generateRandomIndex } from '@/stores/real-time-config/const';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
 
 export default function Index() {
   const lukyRef = useRef<any>();
-  const { blocks, buttons, prizes, wheelTitle } = useRealTimeStore();
+  const { blocks, buttons, prizes, wheelTitle, generateRandomIndex } =
+    useRealTimeStore();
 
   return (
     <View className="flex flex-col h-full justify-center items-center">

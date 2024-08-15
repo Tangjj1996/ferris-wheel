@@ -23,7 +23,7 @@ import arrowUpGreyPath from '@/assets/icon/arrow-up-grey.svg';
 import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
 import cogPath from '@/assets/icon/cog.svg';
-import { PrizesBg } from '@/stores/real-time-config/const';
+import { PrizesBg } from '@/stores/shared';
 import ColorPicker from './color-picker';
 import { IndicateNum, PrizesField, WheelTitleField } from './shared';
 

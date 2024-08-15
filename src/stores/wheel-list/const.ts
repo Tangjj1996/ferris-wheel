@@ -1,14 +1,14 @@
 import { nanoid } from 'nanoid/non-secure';
-import { WheelType } from '../shared';
+import { wheelEatTitle, wheelMoneyTitle, WheelType } from '../shared';
 
 export const wheelList = [
   {
-    text: '中午吃什么🍽️',
+    text: wheelEatTitle,
     targetType: WheelType.eat,
     key: nanoid(),
   },
   {
-    text: '今天谁买单💰',
+    text: wheelMoneyTitle,
     targetType: WheelType.money,
     key: nanoid(),
   },
