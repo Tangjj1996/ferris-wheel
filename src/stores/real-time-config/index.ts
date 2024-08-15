@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { options, wheelTitle } from './const';
 
-type State = typeof options & { wheelTitle: string };
+export type State = typeof options & { wheelTitle: string };
 
 type Action = {
   dispatchUpdate: (value: Partial<State>) => void;

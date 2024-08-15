@@ -55,7 +55,9 @@ export default function Index() {
     const clonePrizes = cloneDeep(prizes);
     clonePrizes.push({
       key: nanoid(),
-      fonts: [{ text: '番茄炒蛋🍅', top: '10%' }],
+      fonts: [
+        { text: clonePrizes[clonePrizes.length - 1].fonts[0].text, top: '10%' },
+      ],
       background: clonePrizes.length % 2 === 0 ? PrizesBg.odd : PrizesBg.even,
     });
 
