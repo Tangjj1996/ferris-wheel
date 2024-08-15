@@ -1,4 +1,4 @@
-name: 上传小程序
+name: 上传CI
 on:
   push:
     tags:
