@@ -2,26 +2,42 @@ name: 提交 Commit 预览小程序
 on:
   push:
     branches:
-      - master
+      - main
+  pull_request:
+    branches:
       - main
 
 jobs:
   preview:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
+
       - name: Taro compile
-        run: npm run build:weapp
+        run: pnpm run build:weapp
+
       - name: Compile
+        id: preview
         uses: crazyurus/miniprogram-action@1.0.0
         with:
           action_type: preview
           project_path: dist
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+
       - name: QR Code
         uses: peter-evans/commit-comment@v2
         with:
