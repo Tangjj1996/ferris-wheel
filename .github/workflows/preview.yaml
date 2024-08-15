@@ -1,0 +1,32 @@
+name: 提交 Commit 预览小程序
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Taro compile
+        run: npm run build:weapp
+      - name: Compile
+        uses: crazyurus/miniprogram-action@1.0.0
+        with:
+          action_type: preview
+          project_path: dist
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      - name: QR Code
+        uses: peter-evans/commit-comment@v2
+        with:
+          body: |
+            Copy the following content to the address bar of the browser to open the preview QR code
+
+            ```
+            ${{ steps.preview.outputs.preview_qrcode }}
+            ```
