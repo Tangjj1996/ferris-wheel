@@ -1,6 +1,6 @@
 # Ferris-Wheel
 
-![二维码]('./二维码.png')
+![二维码](./二维码.png)
 
 ![预览](https://github.com/Tangjj1996/ferris-wheel/actions/workflows/preview.yaml/badge.svg)
 
