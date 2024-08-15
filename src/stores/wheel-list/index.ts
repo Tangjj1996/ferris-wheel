@@ -11,7 +11,7 @@ type Action = {
   dispatchSelectedWheel: (key: string) => void;
 };
 
-export const useWheelList = create<State & Action>((set) => ({
+export const useWheelListStore = create<State & Action>((set) => ({
   wheelList,
   selectedWheel,
   dispatchSelectedWheel(_key) {

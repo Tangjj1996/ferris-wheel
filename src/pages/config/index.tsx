@@ -1,4 +1,3 @@
-import { useRealTimeStore } from '@/stores/real-time-config';
 import {
   useDidHide,
   getSystemInfoSync,
@@ -23,7 +22,8 @@ import arrowUpGreyPath from '@/assets/icon/arrow-up-grey.svg';
 import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
 import cogPath from '@/assets/icon/cog.svg';
-import { PrizesBg } from '@/stores/real-time-config/const';
+import { PrizesBg } from '@/stores/shared';
+import { useRealTimeStore } from '@/stores/real-time-config';
 import ColorPicker from './color-picker';
 import { IndicateNum, PrizesField, WheelTitleField } from './shared';
 
@@ -55,7 +55,9 @@ export default function Index() {
     const clonePrizes = cloneDeep(prizes);
     clonePrizes.push({
       key: nanoid(),
-      fonts: [{ text: '番茄炒蛋🍅', top: '10%' }],
+      fonts: [
+        { text: clonePrizes[clonePrizes.length - 1].fonts[0].text, top: '10%' },
+      ],
       background: clonePrizes.length % 2 === 0 ? PrizesBg.odd : PrizesBg.even,
     });
 
