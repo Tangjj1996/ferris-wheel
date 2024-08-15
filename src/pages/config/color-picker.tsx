@@ -26,16 +26,16 @@ const ColorPicker: React.FC<ColorPickerProps> = (props) => {
       <View
         style={{
           visibility: isShow ? 'visible' : 'hidden',
-          background: '#1a1a1a',
+          background: 'rgba(0, 0, 0, 0.7)',
         }}
         className="fixed inset-0 z-10"
         onClick={() => setShowFalse()}
       >
         <ScrollView
           scrollY
-          style={{ height: '500px' }}
+          style={{ height: isShow ? 500 : 0 }}
           enableFlex
-          className="absolute left-0 bottom-0 rounded-t-3xl z-20 bg-white flex flex-wrap"
+          className="absolute left-0 bottom-0 rounded-t-3xl z-20 bg-white flex flex-wrap transition-all duration-500"
         >
           {colorPalette.map((color) => (
             <View
