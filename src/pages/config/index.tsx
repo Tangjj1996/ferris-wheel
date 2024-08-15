@@ -1,8 +1,10 @@
 import {
   useDidHide,
+  useDidShow,
   getSystemInfoSync,
   showToast,
   vibrateShort,
+  nextTick,
 } from '@tarojs/taro';
 import {
   Input,
@@ -13,7 +15,6 @@ import {
   PickerSelectorProps,
 } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
-import { useMount } from 'ahooks';
 import { cloneDeep, toNumber } from 'lodash';
 import { nanoid } from 'nanoid/non-secure';
 import circleMinusPath from '@/assets/icon/circle-minus.svg';
@@ -123,11 +124,10 @@ export default function Index() {
     }
   };
 
-  useMount(() => {
-    setFormValue(prizes, wheelTitle);
+  useDidShow(() => {
+    nextTick(() => setFormValue(prizes, wheelTitle));
   });
 
-  // 没找到 beforeRouterLeave 钩子，暂时用这个
   useDidHide(() => {
     const formValue = getValues();
     const clonePrizes = cloneDeep(prizes);
@@ -178,7 +178,7 @@ export default function Index() {
         >
           <View className="flex items-center gap-x-4">
             <View className="w-3/6 text-sm text-gray-500">区块</View>
-            <View className="w-1/6 text-sm text-gray-500">颜色</View>
+            <View className="w-1/6 text-sm text-gray-500">色板</View>
             <View className="w-2/6 text-sm text-gray-500">操作</View>
           </View>
           {prizes.map(({ key }, index) => (
