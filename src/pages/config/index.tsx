@@ -174,10 +174,10 @@ export default function Index() {
           style={{ height: (safeArea?.height ?? 100) - 300 }}
           className="px-5 overflow-auto"
         >
-          <View className="flex items-center">
-            <View className="w-2/4 text-sm text-gray-500">区块</View>
-            <View className="w-1/4 text-sm text-gray-500">颜色</View>
-            <View className="w-1/4 text-sm text-gray-500">操作</View>
+          <View className="flex items-center gap-x-4">
+            <View className="w-3/6 text-sm text-gray-500">区块</View>
+            <View className="w-1/6 text-sm text-gray-500">颜色</View>
+            <View className="w-2/6 text-sm text-gray-500">操作</View>
           </View>
           {prizes.map(({ key }, index) => (
             <View className="flex items-center gap-x-4 h-14" key={key}>
@@ -185,7 +185,7 @@ export default function Index() {
                 control={control}
                 name={`${PrizesField.text}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <View className="flex items-center w-2/4 gap-x-4">
+                  <View className="w-3/6 flex items-center">
                     <Input
                       className="border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       value={value}
@@ -198,15 +198,17 @@ export default function Index() {
                 control={control}
                 name={`${PrizesField.background}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <ColorPicker
-                    className="w-6 h-6 border border-solid border-gray-300 rounded-md p-2"
-                    style={{ background: value }}
-                    value={value}
-                    onChange={onChange}
-                  />
+                  <View className="w-1/6">
+                    <ColorPicker
+                      className="w-6 h-6 border border-solid border-gray-300 rounded-md p-2"
+                      style={{ background: value }}
+                      value={value}
+                      onChange={onChange}
+                    />
+                  </View>
                 )}
               />
-              <View className="flex w-1/4 gap-x-2 items-center">
+              <View className="w-2/6 flex gap-x-2 items-center">
                 <Image
                   src={circleMinusPath}
                   style={{ width: 24, height: 24 }}
