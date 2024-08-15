@@ -95,6 +95,11 @@ export const moneyOptions = {
     },
     {
       fonts: [{ text: '👮', top: '10%' }],
+      background: '#e9e8fe',
+      key: nanoid(),
+    },
+    {
+      fonts: [{ text: '👴', top: '10%' }],
       background: '#b8c5f2',
       key: nanoid(),
     },
