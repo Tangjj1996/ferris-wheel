@@ -1,8 +1,5 @@
 name: 预览CI
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
