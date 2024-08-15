@@ -5,14 +5,26 @@ import {
   showToast,
   vibrateShort,
 } from '@tarojs/taro';
-import { Input, View, Form, Image } from '@tarojs/components';
+import {
+  Input,
+  View,
+  Form,
+  Image,
+  Picker,
+  PickerSelectorProps,
+} from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
 import { useMount } from 'ahooks';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, toNumber } from 'lodash';
 import { nanoid } from 'nanoid/non-secure';
 import circleMinusPath from '@/assets/icon/circle-minus.svg';
+import arrowUpPath from '@/assets/icon/arrow-up.svg';
+import arrowUpGreyPath from '@/assets/icon/arrow-up-grey.svg';
+import arrowDownPath from '@/assets/icon/arrow-down.svg';
+import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
+import cogPath from '@/assets/icon/cog.svg';
 import { PrizesBg } from '@/stores/real-time-config/const';
-import { PrizesField, WheelTitleField } from './shared';
+import { IndicateNum, PrizesField, WheelTitleField } from './shared';
 
 export default function Index() {
   const { prizes, dispatchUpdate, getDefaultOptions, wheelTitle } =
@@ -67,6 +79,47 @@ export default function Index() {
     vibrateShort();
   };
 
+  /** 上移 */
+  const hanldeMoveUp = (_key: string, _index: number) => {
+    const clonePrizes = cloneDeep(prizes);
+    [clonePrizes[_index - 1], clonePrizes[_index]] = [
+      clonePrizes[_index],
+      clonePrizes[_index - 1],
+    ];
+
+    dispatchUpdate({
+      prizes: clonePrizes,
+    });
+    setFormValue(clonePrizes);
+    vibrateShort();
+  };
+
+  /** 下移 */
+  const hanldeMoveDonw = (_key: string, _index: number) => {
+    const clonePrizes = cloneDeep(prizes);
+    [clonePrizes[_index], clonePrizes[_index + 1]] = [
+      clonePrizes[_index + 1],
+      clonePrizes[_index],
+    ];
+
+    dispatchUpdate({
+      prizes: clonePrizes,
+    });
+    setFormValue(clonePrizes);
+    vibrateShort();
+  };
+
+  const handlePick: PickerSelectorProps['onChange'] = (e) => {
+    const { value } = e.detail || {};
+
+    if (toNumber(value) === IndicateNum.reset) {
+      handleReset();
+    }
+    if (toNumber(value) === IndicateNum.add) {
+      handleAdd();
+    }
+  };
+
   useMount(() => {
     setFormValue(prizes, wheelTitle);
   });
@@ -105,27 +158,33 @@ export default function Index() {
             )}
           />
         </View>
-        <View className="px-5 text-lg text-gray-500">转盘项</View>
+        <View className="px-5 text-lg text-gray-500 flex items-center gap-x-2">
+          转盘项
+          <Picker
+            mode="selector"
+            range={['重置', '新增']}
+            className="flex justify-center items-center mt-2"
+            onChange={handlePick}
+          >
+            <Image src={cogPath} style={{ width: 24, height: 24 }} />
+          </Picker>
+        </View>
         <View
           style={{ height: (safeArea?.height ?? 100) - 300 }}
           className="px-5 overflow-auto"
         >
           <View className="flex items-center">
-            <View className="w-2/3">区块</View>
-            <View className="w-1/3">颜色</View>
+            <View className="w-2/4 text-sm text-gray-500">区块</View>
+            <View className="w-1/4 text-sm text-gray-500">颜色</View>
+            <View className="w-1/4 text-sm text-gray-500">操作</View>
           </View>
-          {prizes.map(({ key }) => (
+          {prizes.map(({ key }, index) => (
             <View className="flex items-center gap-x-4 h-14" key={key}>
               <Controller
                 control={control}
                 name={`${PrizesField.text}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <View className="flex items-center w-2/3 gap-x-4">
-                    <Image
-                      src={circleMinusPath}
-                      style={{ width: 24, height: 24 }}
-                      onClick={() => handleDelete(key)}
-                    />
+                  <View className="flex items-center w-2/4 gap-x-4">
                     <Input
                       className="border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       value={value}
@@ -139,22 +198,43 @@ export default function Index() {
                 name={`${PrizesField.background}-${key}`}
                 render={({ field: { value, onChange } }) => (
                   <Input
-                    className="w-1/3 border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-1/4 border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     value={value}
                     onInput={onChange}
                   />
                 )}
               />
+              <View className="flex w-1/4 gap-x-2 items-center">
+                <Image
+                  src={circleMinusPath}
+                  style={{ width: 24, height: 24 }}
+                  onClick={() => {
+                    handleDelete(key);
+                  }}
+                />
+                <Image
+                  src={index === 0 ? arrowUpGreyPath : arrowUpPath}
+                  style={{ width: 24, height: 24 }}
+                  onClick={() => {
+                    if (index === 0) return;
+                    hanldeMoveUp(key, index);
+                  }}
+                />
+                <Image
+                  src={
+                    index === prizes.length - 1
+                      ? arrowDownGreyPath
+                      : arrowDownPath
+                  }
+                  style={{ width: 24, height: 24 }}
+                  onClick={() => {
+                    if (index === prizes.length - 1) return;
+                    hanldeMoveDonw(key, index);
+                  }}
+                />
+              </View>
             </View>
           ))}
-        </View>
-        <View className="flex justify-center items-center gap-x-10">
-          <View className="text-blue-500" onClick={handleReset}>
-            重置
-          </View>
-          <View className="text-blue-500" onClick={handleAdd}>
-            新增
-          </View>
         </View>
       </View>
     </Form>
