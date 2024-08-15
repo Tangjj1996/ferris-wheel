@@ -24,6 +24,7 @@ import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
 import cogPath from '@/assets/icon/cog.svg';
 import { PrizesBg } from '@/stores/real-time-config/const';
+import ColorPicker from './color-picker';
 import { IndicateNum, PrizesField, WheelTitleField } from './shared';
 
 export default function Index() {
@@ -197,10 +198,11 @@ export default function Index() {
                 control={control}
                 name={`${PrizesField.background}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <Input
-                    className="w-1/4 border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  <ColorPicker
+                    className="w-6 h-6 border border-solid border-gray-300 rounded-md p-2"
+                    style={{ background: value }}
                     value={value}
-                    onInput={onChange}
+                    onChange={onChange}
                   />
                 )}
               />
