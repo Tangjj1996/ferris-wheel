@@ -39,7 +39,7 @@ jobs:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
 
       - name: QR Code
-        uses: peter-evans/commit-comment@v2
+        uses: peter-evans/commit-comment@v3
         with:
           body: |
             Copy the following content to the address bar of the browser to open the preview QR code
