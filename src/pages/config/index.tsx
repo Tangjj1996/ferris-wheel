@@ -1,4 +1,3 @@
-import { useRealTimeStore } from '@/stores/real-time-config';
 import {
   useDidHide,
   getSystemInfoSync,
@@ -24,6 +23,7 @@ import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
 import cogPath from '@/assets/icon/cog.svg';
 import { PrizesBg } from '@/stores/shared';
+import { useRealTimeStore } from '@/stores/real-time-config';
 import ColorPicker from './color-picker';
 import { IndicateNum, PrizesField, WheelTitleField } from './shared';
 
