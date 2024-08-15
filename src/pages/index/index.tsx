@@ -25,11 +25,11 @@ export default function Index() {
           // 点击抽奖按钮会触发star回调
           // 调用抽奖组件的play方法开始游戏
           lukyRef.current?.play?.();
-          vibrateLong();
           lukyRef.current?.stop?.(generateRandomIndex());
         }}
         onEnd={(prize) => {
           // 抽奖结束会触发end回调
+          vibrateLong();
         }}
       />
     </View>

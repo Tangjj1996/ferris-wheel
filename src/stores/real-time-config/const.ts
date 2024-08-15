@@ -60,3 +60,10 @@ export const generateRandomIndex = () => {
 
   return Math.round(random * 5);
 };
+
+export enum PrizesBg {
+  /** 奇数 */
+  odd = '#e9e8fe',
+  /** */
+  even = '#b8c5f2',
+}
