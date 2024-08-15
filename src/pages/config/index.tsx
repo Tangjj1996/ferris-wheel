@@ -178,7 +178,7 @@ export default function Index() {
         >
           <View className="flex items-center gap-x-4">
             <View className="w-3/6 text-sm text-gray-500">区块</View>
-            <View className="w-1/6 text-sm text-gray-500">颜色</View>
+            <View className="w-1/6 text-sm text-gray-500">色板</View>
             <View className="w-2/6 text-sm text-gray-500">操作</View>
           </View>
           {prizes.map(({ key }, index) => (

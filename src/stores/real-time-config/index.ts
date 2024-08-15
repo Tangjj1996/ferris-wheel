@@ -15,7 +15,7 @@ export const useRealTimeStore = create<State & Action>((set, get) => {
   const realOptions = matchOptions[selectedWheel];
   const realWheelTitle = matchWheelTitle[selectedWheel];
 
-  const state = {
+  const state: State & Action = {
     ...realOptions,
     wheelTitle: realWheelTitle,
     dispatchUpdate(value) {
@@ -36,8 +36,16 @@ export const useRealTimeStore = create<State & Action>((set, get) => {
 
       set(() => record);
     },
-    getDefaultOptions: () =>
-      Object.assign(realOptions, { wheelTitle: realWheelTitle }),
+    getDefaultOptions: () => {
+      const _selectedWheel = useWheelListStore.getState().selectedWheel;
+      const _realOptions = matchOptions[_selectedWheel];
+      const _realWheelTitle = matchWheelTitle[_selectedWheel];
+
+      return {
+        ..._realOptions,
+        wheelTitle: _realWheelTitle,
+      };
+    },
     generateRandomIndex: () => {
       return Math.round(Math.random() * get().prizes.length);
     },
