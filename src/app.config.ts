@@ -1,5 +1,10 @@
 export default defineAppConfig({
-  pages: ['pages/index/index', 'pages/list/index', 'pages/config/index'],
+  pages: [
+    'pages/index/index',
+    'pages/search/index',
+    'pages/config/index',
+    'pages/nearby/index',
+  ],
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
@@ -13,7 +18,7 @@ export default defineAppConfig({
         text: '大盘',
       },
       {
-        pagePath: 'pages/list/index',
+        pagePath: 'pages/search/index',
         text: '搜索',
       },
       {
