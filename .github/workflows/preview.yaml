@@ -35,7 +35,7 @@ jobs:
           action_type: preview
           project_path: dist
         env:
-          PRIVATE_KEY: ${{ secrets }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
 
       - name: QR Code
         uses: peter-evans/commit-comment@v3
