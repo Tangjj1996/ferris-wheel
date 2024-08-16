@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid/non-secure';
 export enum PrizesBg {
   /** 奇数 */
   odd = '#e9e8fe',
-  /** */
+  /** 偶数 */
   even = '#b8c5f2',
 }
 
@@ -18,6 +18,33 @@ export const wheelEatTitle = '中午吃什么🍽️';
 
 export const wheelMoneyTitle = '今天谁买单💰';
 
+const eatPrizes = [
+  {
+    text: '番茄炒蛋🍅',
+    priority: null,
+  },
+  {
+    text: '青椒炒肉丝🫑',
+    priority: null,
+  },
+  {
+    text: '蒜蓉菠菜🥬',
+    priority: null,
+  },
+  {
+    text: '红烧豆腐',
+    priority: null,
+  },
+  {
+    text: '清炒虾仁🍤',
+    priority: null,
+  },
+  {
+    text: '土豆丝🥔',
+    priority: null,
+  },
+];
+
 /**
  * 中文吃什么默认配置
  */
@@ -25,33 +52,33 @@ export const eatOptions = {
   blocks: [{ padding: '13px', background: '#617df2' }],
   prizes: [
     {
-      fonts: [{ text: '番茄炒蛋🍅', top: '10%' }],
-      background: '#e9e8fe',
+      fonts: [{ text: eatPrizes[0].text, top: '10%' }],
+      background: PrizesBg.odd,
       key: nanoid(),
     },
     {
-      fonts: [{ text: '青椒炒肉丝🫑', top: '10%' }],
-      background: '#b8c5f2',
+      fonts: [{ text: eatPrizes[1].text, top: '10%' }],
+      background: PrizesBg.even,
       key: nanoid(),
     },
     {
-      fonts: [{ text: '蒜蓉菠菜🥬', top: '10%' }],
-      background: '#e9e8fe',
+      fonts: [{ text: eatPrizes[2].text, top: '10%' }],
+      background: PrizesBg.odd,
       key: nanoid(),
     },
     {
-      fonts: [{ text: '红烧豆腐🫘', top: '10%' }],
-      background: '#b8c5f2',
+      fonts: [{ text: eatPrizes[3].text, top: '10%' }],
+      background: PrizesBg.even,
       key: nanoid(),
     },
     {
-      fonts: [{ text: '清炒虾仁🍤', top: '10%' }],
-      background: '#e9e8fe',
+      fonts: [{ text: eatPrizes[4].text, top: '10%' }],
+      background: PrizesBg.odd,
       key: nanoid(),
     },
     {
-      fonts: [{ text: '土豆丝🥔', top: '10%' }],
-      background: '#b8c5f2',
+      fonts: [{ text: eatPrizes[5].text, top: '10%' }],
+      background: PrizesBg.even,
       key: nanoid(),
     },
   ],
@@ -75,32 +102,32 @@ export const moneyOptions = {
   prizes: [
     {
       fonts: [{ text: '🧑‍🌾', top: '10%' }],
-      background: '#e9e8fe',
+      background: PrizesBg.odd,
       key: nanoid(),
     },
     {
       fonts: [{ text: '👷', top: '10%' }],
-      background: '#b8c5f2',
+      background: PrizesBg.even,
       key: nanoid(),
     },
     {
       fonts: [{ text: '🧑‍⚕️', top: '10%' }],
-      background: '#e9e8fe',
+      background: PrizesBg.odd,
       key: nanoid(),
     },
     {
       fonts: [{ text: '🧑‍🏫', top: '10%' }],
-      background: '#b8c5f2',
+      background: PrizesBg.even,
       key: nanoid(),
     },
     {
       fonts: [{ text: '👮', top: '10%' }],
-      background: '#e9e8fe',
+      background: PrizesBg.odd,
       key: nanoid(),
     },
     {
       fonts: [{ text: '👴', top: '10%' }],
-      background: '#b8c5f2',
+      background: PrizesBg.even,
       key: nanoid(),
     },
   ],

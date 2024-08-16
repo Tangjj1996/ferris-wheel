@@ -1,8 +1,8 @@
 name: 预览CI
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - mian
 
 jobs:
   preview:
@@ -25,6 +25,8 @@ jobs:
 
       - name: Taro compile
         run: pnpm run build:weapp
+        env:
+          TARO_APP_ID: ${{ secrets.TARO_APP_ID }}
 
       - name: Compile
         id: preview
@@ -33,7 +35,7 @@ jobs:
           action_type: preview
           project_path: dist
         env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          PRIVATE_KEY: ${{ secrets }}
 
       - name: QR Code
         uses: peter-evans/commit-comment@v3

@@ -1,6 +1,6 @@
+import { switchTab, navigateTo } from '@tarojs/taro';
 import { useWheelListStore } from '@/stores/wheel-list';
-import { View } from '@tarojs/components';
-import { switchTab } from '@tarojs/taro';
+import { View, Button } from '@tarojs/components';
 
 export default function Index() {
   const { wheelList, dispatchSelectedWheel } = useWheelListStore();
@@ -12,6 +12,9 @@ export default function Index() {
 
   return (
     <View className="flex flex-col gap-y-4">
+      <Button onClick={() => navigateTo({ url: '/pages/nearby/index' })}>
+        跳转
+      </Button>
       {wheelList.map(({ text, key }) => (
         <View
           key={key}
