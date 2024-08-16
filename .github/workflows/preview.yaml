@@ -1,8 +1,8 @@
 name: 预览CI
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - mian
 
 jobs:
   preview:
