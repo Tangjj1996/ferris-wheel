@@ -18,20 +18,3 @@ export enum DashboardType {
    */
   slotMachine = 'slotMachine',
 }
-
-/**
- * 后端数据转换成大转盘
- */
-export const transfrom2wheel = () => {};
-
-/**
- * 后端数据转换成九宫格
- */
-export const transform2Grid = () => {};
-
-/**
- * 后端数据转换成老虎机
- */
-export const transform2SlotMachnie = () => {};
-
-export const PersistKey = 'dashboard';
