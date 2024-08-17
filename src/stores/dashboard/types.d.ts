@@ -236,6 +236,7 @@ declare type PrizeType$2 = {
   background?: BackgroundType;
   fonts?: Array<PrizeFontType$2>;
   imgs?: Array<PrizeImgType$2>;
+  key?: string;
 };
 declare type ButtonType$1 = {
   radius?: string;
@@ -416,6 +417,7 @@ declare type CellType<T, U> = {
 declare type PrizeType$1 = CellType<PrizeFontType$1, PrizeImgType$1> & {
   range?: number;
   disabled?: boolean;
+  key: string;
 };
 declare type ButtonType = CellType<ButtonFontType, ButtonImgType> & {
   callback?: Function;
@@ -614,6 +616,7 @@ declare type PrizeType = {
   background?: BackgroundType;
   fonts?: Array<PrizeFontType>;
   imgs?: Array<PrizeImgType>;
+  key?: string;
 };
 declare type SlotType = {
   order?: number[];

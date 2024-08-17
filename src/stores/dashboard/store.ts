@@ -13,7 +13,7 @@ import { initialState, State } from './initialState';
 import { DashboardType } from './shared';
 
 export interface Action {
-  setDashboard: (payload: Partial<ConfigData>) => void;
+  setDefaultDashboard: (payload: Partial<ConfigData>) => void;
   generateRandomIndex: () => number;
 }
 
@@ -23,23 +23,9 @@ export const useDashboardStore = createWithEqualityFn<Store>()(
   persist(
     immer((set, get) => ({
       ...initialState,
-      setDashboard(payload) {
-        const {
-          key,
-          dashboard_title,
-          dashboard_type,
-          luck_wheel_config,
-          luck_grid_config,
-          slot_machine_config,
-        } = payload;
-
+      setDefaultDashboard(payload) {
         set({
-          key,
-          dashboard_title,
-          dashboard_type,
-          luck_wheel_config,
-          luck_grid_config,
-          slot_machine_config,
+          default_initial_state: payload,
         });
       },
       generateRandomIndex() {

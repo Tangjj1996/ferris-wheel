@@ -19,6 +19,8 @@ interface ConfigData {
 interface LuckyWheelConfig {
   text: string;
   priority: null | number;
+  background: string;
+  key: string;
 }
 
 interface LuckyGridConfig {}

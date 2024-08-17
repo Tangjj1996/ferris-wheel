@@ -37,9 +37,10 @@ export const transfrom2wheel = (
     width: 300,
     height: 300,
     blocks: [{ padding: '13px', background: '#617df2' }],
-    prizes: luck_wheel_config.map((wheel, index) => ({
-      fonts: [{ text: wheel.text, top: '10%' }],
-      background: index % 2 === 0 ? PrizesBg.even : PrizesBg.odd,
+    prizes: luck_wheel_config.map(({ text, priority, background }) => ({
+      fonts: [{ text, top: '10%' }],
+      range: priority ?? undefined,
+      background,
       key: nanoid(),
     })),
     buttons: [

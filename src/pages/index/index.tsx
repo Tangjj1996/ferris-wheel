@@ -12,8 +12,12 @@ import { LocalStorageKey } from '@/enums';
 import { lunchEat } from '@/consts';
 
 export default function Index() {
-  const { dashboard_type, dashboard_title, generateRandomIndex, setDashboard } =
-    useDashboardStore();
+  const {
+    dashboard_type,
+    dashboard_title,
+    generateRandomIndex,
+    setDefaultDashboard,
+  } = useDashboardStore();
   const { luck_wheel_config } = useDashboardStore(beConfig2FeConfig);
   const lukyRef = useRef<any>();
 
@@ -27,7 +31,8 @@ export default function Index() {
     }
     configData = lunchEat;
     // localStorage 没有，取小程序默认值
-    setDashboard(configData as unknown as ConfigData);
+    setDefaultDashboard(configData as unknown as ConfigData);
+    useDashboardStore.setState(configData as unknown as ConfigData);
   });
 
   return (

@@ -28,6 +28,10 @@ export interface State {
    * 老虎机配置
    */
   slot_machine_config?: ConfigData['slot_machine_config'];
+  /**
+   * 默认配置（可以是前端，也可以是后端）
+   */
+  default_initial_state?: State;
 }
 
 export const initialState: State = {};
