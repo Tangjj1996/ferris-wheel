@@ -1,17 +1,34 @@
 import { useRef } from 'react';
-import { vibrateLong } from '@tarojs/taro';
+import { useDidShow, vibrateLong, getStorageSync } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
-import { useDashboardStore, DashboardType } from '@/stores/dashboard';
+import {
+  useDashboardStore,
+  DashboardType,
+  beConfig2FeConfig,
+} from '@/stores/dashboard';
+import { ConfigData } from '@/api/common/config';
+import { LocalStorageKey } from '@/enums';
+import { lunchEat } from '@/consts';
 
 export default function Index() {
-  const {
-    dashboard_type,
-    dashboard_title,
-    luck_wheel_config,
-    generateRandomIndex,
-  } = useDashboardStore();
+  const { dashboard_type, dashboard_title, generateRandomIndex, setDashboard } =
+    useDashboardStore();
+  const { luck_wheel_config } = useDashboardStore(beConfig2FeConfig);
   const lukyRef = useRef<any>();
+
+  useDidShow(() => {
+    let configData: ConfigData | null = null;
+    const dashboard = getStorageSync(LocalStorageKey.dashboard);
+    // localStorage 已有，直接取本地
+    if (dashboard && dashboard?.state?.luck_wheel_config) {
+      configData = dashboard.state.luck_wheel_config;
+      return;
+    }
+    configData = lunchEat;
+    // localStorage 没有，取小程序默认值
+    setDashboard(configData as unknown as ConfigData);
+  });
 
   return (
     <View className="flex flex-col h-full justify-center items-center">

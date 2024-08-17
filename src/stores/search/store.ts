@@ -5,6 +5,6 @@ interface Action {}
 
 export type Store = State & Action;
 
-export const useSearchStore = create<Store>()(() => ({
+export const useSearchStore = create<Store>()((set) => ({
   ...initialState,
 }));

@@ -8,7 +8,7 @@ export interface ConfigResponse {
 }
 
 interface ConfigData {
-  id: string;
+  key: string;
   dashboard_title: string;
   dashboard_type: DashboardType;
   luck_wheel_config: LuckyWheelConfig[] | null;
