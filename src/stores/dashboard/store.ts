@@ -11,15 +11,13 @@ export interface Action {
 export type Store = State & Action;
 
 export const useDashboardStore = create<Store>()(
-  immer(
-    persist(
-      (set) => ({
-        ...initialState,
-        async init() {
-          set({});
-        },
-      }),
-      { name: PersistKey }
-    )
+  persist(
+    immer((set) => ({
+      ...initialState,
+      async init() {
+        set({});
+      },
+    })),
+    { name: PersistKey }
   )
 );
