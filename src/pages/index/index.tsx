@@ -10,6 +10,7 @@ import {
 import { ConfigData } from '@/api/common/config';
 import { LocalStorageKey } from '@/enums';
 import { lunchEat } from '@/consts';
+import { cloneDeep } from 'lodash';
 
 export default function Index() {
   const {
@@ -26,7 +27,7 @@ export default function Index() {
     const dashboard = getStorageSync(LocalStorageKey.dashboard);
     if (dashboard && dashboard?.state?.luck_wheel_config) {
       // localStorage 已有，直接取本地
-      configData = dashboard.state.luck_wheel_config;
+      configData = cloneDeep(dashboard.state.luck_wheel_config);
     } else {
       // localStorage 没有，制定默认值
       configData = lunchEat;

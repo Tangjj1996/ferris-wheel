@@ -6,7 +6,6 @@ import {
 import { persist } from 'zustand/middleware';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
-import { immer } from 'zustand/middleware/immer';
 import { LocalStorageKey } from '@/enums';
 import { ConfigData } from '@/api/common/config';
 import { initialState, State } from './initialState';
@@ -21,7 +20,7 @@ export type Store = State & Action;
 
 export const useDashboardStore = createWithEqualityFn<Store>()(
   persist(
-    immer((set, get) => ({
+    (set, get) => ({
       ...initialState,
       setDefaultDashboard(payload) {
         set({
@@ -45,7 +44,7 @@ export const useDashboardStore = createWithEqualityFn<Store>()(
 
         return Math.round(Math.random() * (slot_machine_config?.length ?? 0));
       },
-    })),
+    }),
     {
       name: LocalStorageKey.dashboard,
       storage: {
