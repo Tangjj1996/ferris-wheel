@@ -85,16 +85,16 @@ export default function Index() {
     const { key, fonts, background, range } = newPrizes[newPrizes.length - 1];
     if (isNil(key) || isNil(fonts) || isNil(background)) return;
 
-    useDashboardStore.setState(() => {
-      produce(useDashboardStore.getState(), (draft) => {
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
         draft.luck_wheel_config?.push({
           text: fonts[0].text,
           key,
           background,
           priority: range ?? null,
         });
-      });
-    });
+      })
+    );
     setFormValue(newPrizes);
   };
 
@@ -111,8 +111,8 @@ export default function Index() {
       return draft.filter((prize) => prize.key !== key);
     });
 
-    useDashboardStore.setState(() => {
-      produce<DashboardStore>(useDashboardStore.getState(), (draft) => {
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
         draft.luck_wheel_config = newPrizes.map(
           ({ key: iKey, fonts, background, range }) => ({
             key: iKey!,
@@ -121,8 +121,8 @@ export default function Index() {
             priority: range ?? null,
           })
         );
-      });
-    });
+      })
+    );
     setFormValue(newPrizes);
     vibrateShort();
   };
@@ -136,8 +136,8 @@ export default function Index() {
       [draft[index - 1], draft[index]] = [draft[index], draft[index - 1]];
     });
 
-    useDashboardStore.setState(() => {
-      produce<DashboardStore>(useDashboardStore.getState(), (draft) => {
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
         draft.luck_wheel_config = upPrizes.map(
           ({ key: iKey, fonts, background, range }) => ({
             key: iKey!,
@@ -146,8 +146,8 @@ export default function Index() {
             priority: range ?? null,
           })
         );
-      });
-    });
+      })
+    );
     setFormValue(upPrizes);
     vibrateShort();
   };
@@ -161,8 +161,8 @@ export default function Index() {
       [draft[index], draft[index + 1]] = [draft[index + 1], draft[index]];
     });
 
-    useDashboardStore.setState(() => {
-      produce<DashboardStore>(useDashboardStore.getState(), (draft) => {
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
         draft.luck_wheel_config = upPrizes.map(
           ({ key: iKey, fonts, background, range }) => ({
             key: iKey!,
@@ -171,8 +171,8 @@ export default function Index() {
             priority: range ?? null,
           })
         );
-      });
-    });
+      })
+    );
     setFormValue(upPrizes);
     vibrateShort();
   };
@@ -198,15 +198,15 @@ export default function Index() {
   useDidHide(() => {
     const formValue = getValues();
 
-    useDashboardStore.setState(() => {
-      produce(useDashboardStore.getState(), (draft) => {
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
         draft.luck_wheel_config?.forEach((item) => {
           item.text = formValue[`${PrizesField.text}-${item.key}`];
           item.background = formValue[`${PrizesField.background}-${item.key}`];
         });
         draft.dashboard_title = formValue[WheelTitleField];
-      });
-    });
+      })
+    );
   });
 
   return (
