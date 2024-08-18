@@ -8,7 +8,7 @@ import { PrizesBg } from './stores/shared';
  */
 export const lunchEat: ConfigData = {
   key: nanoid(),
-  dashboard_title: '中文吃什么🍽️',
+  dashboard_title: '中午吃啥🍽️',
   dashboard_type: DashboardType.wheel,
   luck_wheel_config: [
     {

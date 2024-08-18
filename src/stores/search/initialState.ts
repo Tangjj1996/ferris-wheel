@@ -1,3 +1,4 @@
+import { lunchEat } from '@/consts';
 import { DashboardType } from '../dashboard';
 
 export interface SearchList {
@@ -12,4 +13,6 @@ export interface State {
   selectedKey?: string;
 }
 
-export const initialState: State = {};
+export const initialState: State = {
+  selectedKey: lunchEat.key,
+};
