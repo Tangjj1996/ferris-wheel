@@ -18,7 +18,7 @@ import arrowUpGreyPath from '@/assets/icon/arrow-up-grey.svg';
 import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
 import { PrizesBg } from '@/stores/shared';
-import { useBoolean, useMemoizedFn } from 'ahooks';
+import { useBoolean } from 'ahooks';
 import {
   beConfig2FeConfig,
   useDashboardStore,
@@ -192,20 +192,24 @@ export default function Index() {
   // 在组件外部定义防抖函数
   const debouncedUpdateDashboardState = useMemo(
     () =>
-      debounce((_formValues) => {
-        useDashboardStore.setState(
-          produce<DashboardStore>((draft) => {
-            draft.luck_wheel_config?.forEach((item) => {
-              item.text = _formValues[`${PrizesField.text}-${item.key}`];
-              item.background =
-                _formValues[`${PrizesField.background}-${item.key}`];
-              item.priority = _formValues[`${PrizesField.range}-${item.key}`];
-            });
-            draft.dashboard_title = _formValues[WheelTitleField];
-          })
-        );
-      }, 300),
-    [formValues]
+      debounce(
+        (_formValues) => {
+          useDashboardStore.setState(
+            produce<DashboardStore>((draft) => {
+              draft.luck_wheel_config?.forEach((item) => {
+                item.text = _formValues[`${PrizesField.text}-${item.key}`];
+                item.background =
+                  _formValues[`${PrizesField.background}-${item.key}`];
+                item.priority = _formValues[`${PrizesField.range}-${item.key}`];
+              });
+              draft.dashboard_title = _formValues[WheelTitleField];
+            })
+          );
+        },
+        300,
+        { leading: false, trailing: true }
+      ),
+    []
   );
 
   useEffect(() => {
