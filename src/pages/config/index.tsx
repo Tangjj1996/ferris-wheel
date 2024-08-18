@@ -1,5 +1,5 @@
+import { useEffect } from 'react';
 import {
-  useDidHide,
   useDidShow,
   getSystemInfoSync,
   showToast,
@@ -39,16 +39,18 @@ export default function Index() {
     (s) => s.default_initial_state
   );
   const dashboard_title = useDashboardStore((s) => s.dashboard_title);
-  const { control, getValues, setValue } = useForm();
+  const { control, setValue, watch } = useForm();
   const { safeArea } = getSystemInfoSync();
+  const formValues = watch();
 
   const setFormValue = (
     formValue: NonNullable<typeof luck_wheel_config>['prizes'],
     title?: string
   ) => {
-    formValue?.forEach(({ key, fonts, background }) => {
+    formValue?.forEach(({ key, fonts, background, range }) => {
       setValue(`${PrizesField.text}-${key}`, fonts?.[0]?.text);
       setValue(`${PrizesField.background}-${key}`, background);
+      setValue(`${PrizesField.range}-${key}`, range);
     });
     if (title) {
       setValue(WheelTitleField, title);
@@ -196,19 +198,18 @@ export default function Index() {
     });
   });
 
-  useDidHide(() => {
-    const formValue = getValues();
-
+  useEffect(() => {
     useDashboardStore.setState(
       produce<DashboardStore>((draft) => {
         draft.luck_wheel_config?.forEach((item) => {
-          item.text = formValue[`${PrizesField.text}-${item.key}`];
-          item.background = formValue[`${PrizesField.background}-${item.key}`];
+          item.text = formValues[`${PrizesField.text}-${item.key}`];
+          item.background = formValues[`${PrizesField.background}-${item.key}`];
+          item.priority = formValues[`${PrizesField.range}-${item.key}`];
         });
-        draft.dashboard_title = formValue[WheelTitleField];
+        draft.dashboard_title = formValues[WheelTitleField];
       })
     );
-  });
+  }, [formValues]);
 
   return (
     <Form>
@@ -246,7 +247,7 @@ export default function Index() {
             <View className="w-5/12 text-sm text-gray-500">区块</View>
             <View className="w-2/12 text-sm text-gray-500">色板</View>
             <View className="w-2/12 text-sm text-gray-500">权重</View>
-            <View className="w-3/12 text-sm text-gray-500">操作</View>
+            <View className="w-5/12 text-sm text-gray-500">操作</View>
           </View>
           {luck_wheel_config?.prizes?.map(({ key }, index) => (
             <View className="flex items-center gap-x-4 h-14" key={key}>
@@ -254,7 +255,7 @@ export default function Index() {
                 control={control}
                 name={`${PrizesField.text}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <View className="w-3/6 flex items-center">
+                  <View className="w-5/12 flex items-center">
                     <Input
                       className="border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       value={value}
@@ -267,7 +268,7 @@ export default function Index() {
                 control={control}
                 name={`${PrizesField.background}-${key}`}
                 render={({ field: { value, onChange } }) => (
-                  <View className="w-1/6">
+                  <View className="w-2/12">
                     <ColorPicker
                       className="w-6 h-6 border border-solid border-gray-300 rounded-md p-2"
                       style={{ background: value }}
@@ -277,7 +278,23 @@ export default function Index() {
                   </View>
                 )}
               />
-              <View className="w-2/6 flex gap-x-2 items-center">
+              <Controller
+                control={control}
+                name={`${PrizesField.range}-${key}`}
+                render={({ field: { value, onChange } }) => (
+                  <View className="w-2/12">
+                    <Input
+                      type="digit"
+                      placeholder="无"
+                      className="border border-solid border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      value={value ?? undefined}
+                      onInput={(e) => onChange(toNumber(e.detail.value))}
+                    />
+                  </View>
+                )}
+              />
+
+              <View className="w-3/12 flex gap-x-2 items-center">
                 <Image
                   src={circleMinusPath}
                   style={{ width: 24, height: 24 }}
