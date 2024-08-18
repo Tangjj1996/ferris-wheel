@@ -37,9 +37,9 @@ const ColorPicker: React.FC<ColorPickerProps> = (props) => {
           enableFlex
           className="absolute left-0 bottom-0 rounded-t-3xl z-20 bg-white flex flex-wrap transition-all duration-500"
         >
-          {colorPalette.map((color) => (
+          {colorPalette.map((color, index) => (
             <View
-              key={color}
+              key={index}
               style={{ background: color }}
               className="w-10 h-10 rounded-full m-4 flex justify-center items-center"
               onClick={() => onChange(color)}
