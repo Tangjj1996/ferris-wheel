@@ -1,12 +1,10 @@
 import { ConfigData } from '@/api/common/config';
 import { isNil } from 'lodash';
-import { nanoid } from 'nanoid/non-secure';
 import type {
   LuckyWheelConfig,
   LuckyGridConfig,
   SlotMachineConfig,
 } from './types';
-import { PrizesBg } from '../shared';
 
 export type { LuckyWheelConfig, LuckyGridConfig, SlotMachineConfig };
 
@@ -37,11 +35,11 @@ export const transfrom2wheel = (
     width: 300,
     height: 300,
     blocks: [{ padding: '13px', background: '#617df2' }],
-    prizes: luck_wheel_config.map(({ text, priority, background }) => ({
+    prizes: luck_wheel_config.map(({ key, text, priority, background }) => ({
       fonts: [{ text, top: '10%' }],
       range: priority ?? undefined,
       background,
-      key: nanoid(),
+      key,
     })),
     buttons: [
       { radius: '50px', background: '#617df2' },

@@ -59,6 +59,7 @@ export default function Index() {
   const handleReset = () => {
     if (isNil(default_initial_state)) return;
 
+    useDashboardStore.setState(default_initial_state);
     setFormValue(
       beConfig2FeConfig(default_initial_state as DashboardStore)
         .luck_wheel_config?.prizes,
@@ -128,7 +129,7 @@ export default function Index() {
   };
 
   /** 上移 */
-  const hanldeMoveUp = (key: string | undefined, index: number) => {
+  const hanldeMoveUp = (_key: string | undefined, index: number) => {
     const { prizes } = luck_wheel_config || {};
     if (isNil(prizes)) return;
 

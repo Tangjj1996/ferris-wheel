@@ -12,31 +12,37 @@ export const lunchEat: ConfigData = {
   dashboard_type: DashboardType.wheel,
   luck_wheel_config: [
     {
+      key: nanoid(),
       text: '番茄炒蛋🍅',
       background: PrizesBg.odd,
       priority: null,
     },
     {
+      key: nanoid(),
       text: '青椒炒肉丝🫑',
       background: PrizesBg.even,
       priority: null,
     },
     {
+      key: nanoid(),
       text: '蒜蓉菠菜🥬',
       priority: null,
       background: PrizesBg.odd,
     },
     {
+      key: nanoid(),
       text: '红烧豆腐',
       priority: null,
       background: PrizesBg.even,
     },
     {
+      key: nanoid(),
       text: '清炒虾仁🍤',
       priority: null,
       background: PrizesBg.odd,
     },
     {
+      key: nanoid(),
       text: '土豆丝🥔',
       priority: null,
       background: PrizesBg.even,
@@ -55,31 +61,37 @@ export const todayPayTheBill: ConfigData = {
   dashboard_type: DashboardType.wheel,
   luck_wheel_config: [
     {
+      key: nanoid(),
       text: '雷电将军🧑‍🌾',
       background: PrizesBg.odd,
       priority: null,
     },
     {
+      key: nanoid(),
       text: '万叶👷',
       priority: null,
       background: PrizesBg.even,
     },
     {
+      key: nanoid(),
       text: '胡桃🧑‍⚕️',
       background: PrizesBg.odd,
       priority: null,
     },
     {
+      key: nanoid(),
       text: '钟离🧑‍🏫',
       priority: null,
       background: PrizesBg.even,
     },
     {
+      key: nanoid(),
       text: '甘雨👮',
       background: PrizesBg.odd,
       priority: null,
     },
     {
+      key: nanoid(),
       text: '纳西妲👴',
       priority: null,
       background: PrizesBg.even,
