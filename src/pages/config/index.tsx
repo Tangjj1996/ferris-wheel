@@ -57,7 +57,7 @@ export default function Index() {
   const handleReset = () => {
     if (isNil(default_initial_state)) return;
 
-    // useDashboardStore.setState(default_initial_state);
+    useDashboardStore.setState(default_initial_state);
     setFormValue(
       beConfig2FeConfig(default_initial_state as DashboardStore)
         .luck_wheel_config?.prizes,
