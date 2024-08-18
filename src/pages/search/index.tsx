@@ -1,5 +1,5 @@
 import { switchTab, navigateTo, useDidShow } from '@tarojs/taro';
-import { View, Button } from '@tarojs/components';
+import { View, Button, Input } from '@tarojs/components';
 import { useSearchStore } from '@/stores/search';
 import { DashboardType, useDashboardStore } from '@/stores/dashboard';
 import { lunchEat, todayPayTheBill } from '@/consts';
@@ -60,9 +60,9 @@ export default function Index() {
 
   return (
     <View className="flex flex-col gap-y-4">
-      <Button onClick={() => navigateTo({ url: '/pages/nearby/index' })}>
-        跳转
-      </Button>
+      <View>
+        <Input onClick={() => navigateTo({ url: '/pages/nearby/index' })} />
+      </View>
       {searchList?.map(({ text, key }) => (
         <View
           key={key}
