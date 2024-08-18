@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
 import {
   getSystemInfoSync,
   showToast,
   vibrateShort,
   nextTick,
-  useLoad,
+  useDidHide,
+  useDidShow,
 } from '@tarojs/taro';
 import { Input, View, Form, Image, Button } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
@@ -31,9 +31,8 @@ export default function Index() {
     (s) => s.default_initial_state
   );
   const dashboard_title = useDashboardStore((s) => s.dashboard_title);
-  const { control, setValue, watch } = useForm();
+  const { control, setValue, getValues } = useForm();
   const { safeArea } = getSystemInfoSync();
-  const formValues = watch();
 
   const setFormValue = (
     formValue: NonNullable<typeof luck_wheel_config>['prizes'],
@@ -174,14 +173,16 @@ export default function Index() {
     vibrateShort();
   };
 
-  useLoad(() => {
+  useDidShow(() => {
     nextTick(() => {
       const { prizes } = luck_wheel_config || {};
       setFormValue(prizes, dashboard_title);
     });
   });
 
-  useEffect(() => {
+  useDidHide(() => {
+    const formValues = getValues();
+
     useDashboardStore.setState(
       produce<DashboardStore>((draft) => {
         draft.luck_wheel_config?.forEach((item) => {
@@ -192,7 +193,7 @@ export default function Index() {
         draft.dashboard_title = formValues[WheelTitleField];
       })
     );
-  }, [formValues]);
+  });
 
   return (
     <Form>
