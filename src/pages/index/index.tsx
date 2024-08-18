@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useDidShow, vibrateLong, getStorageSync } from '@tarojs/taro';
+import { vibrateLong, getStorageSync, useLoad } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
 import {
@@ -21,18 +21,15 @@ export default function Index() {
   const { luck_wheel_config } = useDashboardStore(beConfig2FeConfig);
   const lukyRef = useRef<any>();
 
-  useDidShow(() => {
-    let configData: ConfigData | null = null;
+  useLoad(() => {
     const dashboard = getStorageSync(LocalStorageKey.dashboard);
-    // localStorage 已有，直接取本地
     if (dashboard && dashboard?.state?.luck_wheel_config) {
-      configData = dashboard.state.luck_wheel_config;
+      // localStorage 已有，不需要再设置
       return;
     }
-    configData = lunchEat;
-    // localStorage 没有，取小程序默认值
-    setDefaultDashboard(configData as unknown as ConfigData);
-    useDashboardStore.setState(configData as unknown as ConfigData);
+
+    useDashboardStore.setState(lunchEat as unknown as ConfigData);
+    setDefaultDashboard(lunchEat as unknown as ConfigData);
   });
 
   return (
@@ -50,7 +47,7 @@ export default function Index() {
             lukyRef.current?.play?.();
             lukyRef.current?.stop?.(generateRandomIndex());
           }}
-          onEnd={(prize) => {
+          onEnd={(_prize) => {
             // 抽奖结束会触发end回调
             vibrateLong();
           }}
