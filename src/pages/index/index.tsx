@@ -22,18 +22,14 @@ export default function Index() {
   const lukyRef = useRef<any>();
 
   useLoad(() => {
-    let configData: ConfigData | null = null;
     const dashboard = getStorageSync(LocalStorageKey.dashboard);
     if (dashboard && dashboard?.state?.luck_wheel_config) {
-      // localStorage 已有，直接取本地
-      configData = dashboard.state;
-    } else {
-      // localStorage 没有，制定默认值
-      configData = lunchEat;
+      // localStorage 已有，不需要再设置
+      return;
     }
 
-    setDefaultDashboard(configData as unknown as ConfigData);
-    useDashboardStore.setState(configData as unknown as ConfigData);
+    useDashboardStore.setState(lunchEat as unknown as ConfigData);
+    setDefaultDashboard(lunchEat as unknown as ConfigData);
   });
 
   return (
