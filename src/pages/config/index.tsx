@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   getSystemInfoSync,
   showToast,
@@ -9,7 +9,7 @@ import {
 } from '@tarojs/taro';
 import { Input, View, Form, Image, Button } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
-import { isNil, toNumber } from 'lodash';
+import { debounce, isNil, toNumber } from 'lodash';
 import { produce } from 'immer';
 import { nanoid } from 'nanoid/non-secure';
 import circleMinusPath from '@/assets/icon/circle-minus.svg';
@@ -18,7 +18,7 @@ import arrowUpGreyPath from '@/assets/icon/arrow-up-grey.svg';
 import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
 import { PrizesBg } from '@/stores/shared';
-import { useBoolean } from 'ahooks';
+import { useBoolean, useMemoizedFn } from 'ahooks';
 import {
   beConfig2FeConfig,
   useDashboardStore,
@@ -189,21 +189,35 @@ export default function Index() {
 
   useDidHide(() => setWatchFalse());
 
+  // 在组件外部定义防抖函数
+  const debouncedUpdateDashboardState = useMemo(
+    () =>
+      debounce((_formValues) => {
+        useDashboardStore.setState(
+          produce<DashboardStore>((draft) => {
+            draft.luck_wheel_config?.forEach((item) => {
+              item.text = _formValues[`${PrizesField.text}-${item.key}`];
+              item.background =
+                _formValues[`${PrizesField.background}-${item.key}`];
+              item.priority = _formValues[`${PrizesField.range}-${item.key}`];
+            });
+            draft.dashboard_title = _formValues[WheelTitleField];
+          })
+        );
+      }, 300),
+    [formValues]
+  );
+
   useEffect(() => {
     // 离开(hide)页面，主动取消监听
     if (!isNeedWaching) return;
 
-    useDashboardStore.setState(
-      produce<DashboardStore>((draft) => {
-        draft.luck_wheel_config?.forEach((item) => {
-          item.text = formValues[`${PrizesField.text}-${item.key}`];
-          item.background = formValues[`${PrizesField.background}-${item.key}`];
-          item.priority = formValues[`${PrizesField.range}-${item.key}`];
-        });
-        draft.dashboard_title = formValues[WheelTitleField];
-      })
-    );
-  }, [formValues, isNeedWaching]);
+    debouncedUpdateDashboardState(formValues);
+
+    return () => {
+      debouncedUpdateDashboardState.cancel();
+    };
+  }, [formValues, isNeedWaching, debouncedUpdateDashboardState]);
 
   return (
     <Form>
