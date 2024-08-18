@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import {
-  useDidShow,
   getSystemInfoSync,
   showToast,
   vibrateShort,
   nextTick,
+  useLoad,
 } from '@tarojs/taro';
 import { Input, View, Form, Image, Button } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
@@ -172,7 +172,7 @@ export default function Index() {
     vibrateShort();
   };
 
-  useDidShow(() => {
+  useLoad(() => {
     nextTick(() => {
       const { prizes } = luck_wheel_config || {};
       setFormValue(prizes, dashboard_title);
