@@ -15,7 +15,8 @@ import {
   PickerSelectorProps,
 } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
-import { cloneDeep, toNumber } from 'lodash';
+import { isNil, toNumber } from 'lodash';
+import { produce } from 'immer';
 import { nanoid } from 'nanoid/non-secure';
 import circleMinusPath from '@/assets/icon/circle-minus.svg';
 import arrowUpPath from '@/assets/icon/arrow-up.svg';
@@ -24,19 +25,29 @@ import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
 import cogPath from '@/assets/icon/cog.svg';
 import { PrizesBg } from '@/stores/shared';
-import { useRealTimeStore } from '@/stores/real-time-config';
+import {
+  beConfig2FeConfig,
+  useDashboardStore,
+  Store as DashboardStore,
+} from '@/stores/dashboard';
 import ColorPicker from './color-picker';
 import { IndicateNum, PrizesField, WheelTitleField } from './shared';
 
 export default function Index() {
-  const { prizes, dispatchUpdate, getDefaultOptions, wheelTitle } =
-    useRealTimeStore();
+  const { luck_wheel_config } = useDashboardStore(beConfig2FeConfig);
+  const default_initial_state = useDashboardStore(
+    (s) => s.default_initial_state
+  );
+  const dashboard_title = useDashboardStore((s) => s.dashboard_title);
   const { control, getValues, setValue } = useForm();
   const { safeArea } = getSystemInfoSync();
 
-  const setFormValue = (formValue: typeof prizes, title?: string) => {
-    formValue.forEach(({ key, fonts, background }) => {
-      setValue(`${PrizesField.text}-${key}`, fonts[0].text);
+  const setFormValue = (
+    formValue: NonNullable<typeof luck_wheel_config>['prizes'],
+    title?: string
+  ) => {
+    formValue?.forEach(({ key, fonts, background }) => {
+      setValue(`${PrizesField.text}-${key}`, fonts?.[0]?.text);
       setValue(`${PrizesField.background}-${key}`, background);
     });
     if (title) {
@@ -46,70 +57,124 @@ export default function Index() {
 
   /** 重置 */
   const handleReset = () => {
-    const options = getDefaultOptions();
-    dispatchUpdate(options);
-    setFormValue(options?.prizes, options.wheelTitle);
+    if (isNil(default_initial_state)) return;
+
+    useDashboardStore.setState(default_initial_state);
+    setFormValue(
+      beConfig2FeConfig(default_initial_state as DashboardStore)
+        .luck_wheel_config?.prizes,
+      default_initial_state.dashboard_title
+    );
   };
 
   /** 新增 */
   const handleAdd = () => {
-    const clonePrizes = cloneDeep(prizes);
-    clonePrizes.push({
-      key: nanoid(),
-      fonts: [
-        { text: clonePrizes[clonePrizes.length - 1].fonts[0].text, top: '10%' },
-      ],
-      background: clonePrizes.length % 2 === 0 ? PrizesBg.odd : PrizesBg.even,
+    const newPrizes = produce(luck_wheel_config?.prizes, (draft) => {
+      draft?.push({
+        key: nanoid(),
+        fonts: [
+          {
+            text: draft[draft.length - 1]?.fonts?.[0]?.text ?? '',
+            top: '10%',
+          },
+        ],
+        background: draft.length % 2 === 0 ? PrizesBg.odd : PrizesBg.even,
+      });
     });
 
-    dispatchUpdate({
-      prizes: clonePrizes,
-    });
-    setFormValue(clonePrizes);
+    if (isNil(newPrizes)) return;
+    const { key, fonts, background, range } = newPrizes[newPrizes.length - 1];
+    if (isNil(key) || isNil(fonts) || isNil(background)) return;
+
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
+        draft.luck_wheel_config?.push({
+          text: fonts[0].text,
+          key,
+          background,
+          priority: range ?? null,
+        });
+      })
+    );
+    setFormValue(newPrizes);
   };
 
   /** 删除 */
-  const handleDelete = (_key: string) => {
+  const handleDelete = (key: string | undefined) => {
+    const { prizes } = luck_wheel_config || {};
+    if (isNil(prizes)) return;
+
     if (prizes.length === 2) {
       showToast({ title: '请至少保留两项', icon: 'none' });
       return;
     }
-    const clonePrizes = cloneDeep(prizes).filter(({ key }) => key !== _key);
-
-    dispatchUpdate({
-      prizes: clonePrizes,
+    const newPrizes = produce(prizes, (draft) => {
+      return draft.filter((prize) => prize.key !== key);
     });
-    setFormValue(clonePrizes);
+
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
+        draft.luck_wheel_config = newPrizes.map(
+          ({ key: iKey, fonts, background, range }) => ({
+            key: iKey!,
+            text: fonts?.[0].text ?? '',
+            background: background!,
+            priority: range ?? null,
+          })
+        );
+      })
+    );
+    setFormValue(newPrizes);
     vibrateShort();
   };
 
   /** 上移 */
-  const hanldeMoveUp = (_key: string, _index: number) => {
-    const clonePrizes = cloneDeep(prizes);
-    [clonePrizes[_index - 1], clonePrizes[_index]] = [
-      clonePrizes[_index],
-      clonePrizes[_index - 1],
-    ];
+  const hanldeMoveUp = (_key: string | undefined, index: number) => {
+    const { prizes } = luck_wheel_config || {};
+    if (isNil(prizes)) return;
 
-    dispatchUpdate({
-      prizes: clonePrizes,
+    const upPrizes = produce(prizes, (draft) => {
+      [draft[index - 1], draft[index]] = [draft[index], draft[index - 1]];
     });
-    setFormValue(clonePrizes);
+
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
+        draft.luck_wheel_config = upPrizes.map(
+          ({ key: iKey, fonts, background, range }) => ({
+            key: iKey!,
+            text: fonts?.[0].text ?? '',
+            background: background!,
+            priority: range ?? null,
+          })
+        );
+      })
+    );
+    setFormValue(upPrizes);
     vibrateShort();
   };
 
   /** 下移 */
-  const hanldeMoveDonw = (_key: string, _index: number) => {
-    const clonePrizes = cloneDeep(prizes);
-    [clonePrizes[_index], clonePrizes[_index + 1]] = [
-      clonePrizes[_index + 1],
-      clonePrizes[_index],
-    ];
+  const hanldeMoveDonw = (_key: string | undefined, index: number) => {
+    const { prizes } = luck_wheel_config || {};
+    if (isNil(prizes)) return;
 
-    dispatchUpdate({
-      prizes: clonePrizes,
+    const upPrizes = produce(prizes, (draft) => {
+      [draft[index], draft[index + 1]] = [draft[index + 1], draft[index]];
     });
-    setFormValue(clonePrizes);
+
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
+        draft.luck_wheel_config = upPrizes.map(
+          ({ key: iKey, fonts, background, range }) => ({
+            key: iKey!,
+            text: fonts?.[0].text ?? '',
+            background: background!,
+            priority: range ?? null,
+          })
+        );
+      })
+    );
+    setFormValue(upPrizes);
     vibrateShort();
   };
 
@@ -125,23 +190,24 @@ export default function Index() {
   };
 
   useDidShow(() => {
-    nextTick(() => setFormValue(prizes, wheelTitle));
+    nextTick(() => {
+      const { prizes } = luck_wheel_config || {};
+      setFormValue(prizes, dashboard_title);
+    });
   });
 
   useDidHide(() => {
     const formValue = getValues();
-    const clonePrizes = cloneDeep(prizes);
 
-    clonePrizes.forEach(({ fonts, key }, index) => {
-      clonePrizes[index].background =
-        formValue[`${PrizesField.background}-${key}`];
-      fonts[0].text = formValue[`${PrizesField.text}-${key}`];
-    });
-
-    dispatchUpdate({
-      prizes: clonePrizes,
-      wheelTitle: formValue[WheelTitleField],
-    });
+    useDashboardStore.setState(
+      produce<DashboardStore>((draft) => {
+        draft.luck_wheel_config?.forEach((item) => {
+          item.text = formValue[`${PrizesField.text}-${item.key}`];
+          item.background = formValue[`${PrizesField.background}-${item.key}`];
+        });
+        draft.dashboard_title = formValue[WheelTitleField];
+      })
+    );
   });
 
   return (
@@ -177,11 +243,12 @@ export default function Index() {
           className="px-5 overflow-auto"
         >
           <View className="flex items-center gap-x-4">
-            <View className="w-3/6 text-sm text-gray-500">区块</View>
-            <View className="w-1/6 text-sm text-gray-500">色板</View>
-            <View className="w-2/6 text-sm text-gray-500">操作</View>
+            <View className="w-5/12 text-sm text-gray-500">区块</View>
+            <View className="w-2/12 text-sm text-gray-500">色板</View>
+            <View className="w-2/12 text-sm text-gray-500">权重</View>
+            <View className="w-3/12 text-sm text-gray-500">操作</View>
           </View>
-          {prizes.map(({ key }, index) => (
+          {luck_wheel_config?.prizes?.map(({ key }, index) => (
             <View className="flex items-center gap-x-4 h-14" key={key}>
               <Controller
                 control={control}
@@ -228,13 +295,14 @@ export default function Index() {
                 />
                 <Image
                   src={
-                    index === prizes.length - 1
+                    index === (luck_wheel_config?.prizes?.length ?? 0) - 1
                       ? arrowDownGreyPath
                       : arrowDownPath
                   }
                   style={{ width: 24, height: 24 }}
                   onClick={() => {
-                    if (index === prizes.length - 1) return;
+                    if (index === (luck_wheel_config?.prizes?.length ?? 0) - 1)
+                      return;
                     hanldeMoveDonw(key, index);
                   }}
                 />
