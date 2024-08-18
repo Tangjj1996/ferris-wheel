@@ -59,6 +59,7 @@ export default function Index() {
         .luck_wheel_config?.prizes,
       default_initial_state.dashboard_title
     );
+    vibrateShort();
   };
 
   /** 新增 */
@@ -91,6 +92,7 @@ export default function Index() {
       })
     );
     setFormValue(newPrizes);
+    vibrateShort();
   };
 
   /** 删除 */
