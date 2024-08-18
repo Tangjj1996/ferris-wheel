@@ -13,6 +13,7 @@ import {
   Image,
   Picker,
   PickerSelectorProps,
+  Button,
 } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
 import { isNil, toNumber } from 'lodash';
@@ -180,17 +181,6 @@ export default function Index() {
     vibrateShort();
   };
 
-  const handlePick: PickerSelectorProps['onChange'] = (e) => {
-    const { value } = e.detail || {};
-
-    if (toNumber(value) === IndicateNum.reset) {
-      handleReset();
-    }
-    if (toNumber(value) === IndicateNum.add) {
-      handleAdd();
-    }
-  };
-
   useDidShow(() => {
     nextTick(() => {
       const { prizes } = luck_wheel_config || {};
@@ -230,14 +220,6 @@ export default function Index() {
         </View>
         <View className="px-5 text-lg text-gray-500 flex items-center gap-x-2">
           转盘项
-          <Picker
-            mode="selector"
-            range={['重置', '新增']}
-            className="flex justify-center items-center mt-2"
-            onChange={handlePick}
-          >
-            <Image src={cogPath} style={{ width: 24, height: 24 }} />
-          </Picker>
         </View>
         <View
           style={{ height: (safeArea?.height ?? 100) - 300 }}
@@ -326,6 +308,21 @@ export default function Index() {
               </View>
             </View>
           ))}
+          <View className="flex justify-between items-center gap-x-4 mt-4">
+            <Button
+              className="border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/2"
+              onClick={handleReset}
+            >
+              重置
+            </Button>
+            <Button
+              className="
+            border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/2"
+              onClick={handleAdd}
+            >
+              新增
+            </Button>
+          </View>
         </View>
       </View>
     </Form>
