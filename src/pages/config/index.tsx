@@ -6,15 +6,7 @@ import {
   vibrateShort,
   nextTick,
 } from '@tarojs/taro';
-import {
-  Input,
-  View,
-  Form,
-  Image,
-  Picker,
-  PickerSelectorProps,
-  Button,
-} from '@tarojs/components';
+import { Input, View, Form, Image, Button } from '@tarojs/components';
 import { Controller, useForm } from 'react-hook-form';
 import { isNil, toNumber } from 'lodash';
 import { produce } from 'immer';
@@ -24,7 +16,6 @@ import arrowUpPath from '@/assets/icon/arrow-up.svg';
 import arrowUpGreyPath from '@/assets/icon/arrow-up-grey.svg';
 import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
-import cogPath from '@/assets/icon/cog.svg';
 import { PrizesBg } from '@/stores/shared';
 import {
   beConfig2FeConfig,
@@ -32,7 +23,7 @@ import {
   Store as DashboardStore,
 } from '@/stores/dashboard';
 import ColorPicker from './color-picker';
-import { IndicateNum, PrizesField, WheelTitleField } from './shared';
+import { PrizesField, WheelTitleField } from './shared';
 
 export default function Index() {
   const { luck_wheel_config } = useDashboardStore(beConfig2FeConfig);
