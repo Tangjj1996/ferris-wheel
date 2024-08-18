@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   getSystemInfoSync,
   showToast,
@@ -17,6 +18,7 @@ import arrowUpGreyPath from '@/assets/icon/arrow-up-grey.svg';
 import arrowDownPath from '@/assets/icon/arrow-down.svg';
 import arrowDownGreyPath from '@/assets/icon/arrow-down-grey.svg';
 import { PrizesBg } from '@/stores/shared';
+import { useBoolean } from 'ahooks';
 import {
   beConfig2FeConfig,
   useDashboardStore,
@@ -31,8 +33,11 @@ export default function Index() {
     (s) => s.default_initial_state
   );
   const dashboard_title = useDashboardStore((s) => s.dashboard_title);
-  const { control, setValue, getValues } = useForm();
+  const { control, setValue, watch } = useForm();
   const { safeArea } = getSystemInfoSync();
+  const [isNeedWaching, { setTrue: setWatchTrue, setFalse: setWatchFalse }] =
+    useBoolean(false);
+  const formValues = watch();
 
   const setFormValue = (
     formValue: NonNullable<typeof luck_wheel_config>['prizes'],
@@ -52,7 +57,7 @@ export default function Index() {
   const handleReset = () => {
     if (isNil(default_initial_state)) return;
 
-    useDashboardStore.setState(default_initial_state);
+    // useDashboardStore.setState(default_initial_state);
     setFormValue(
       beConfig2FeConfig(default_initial_state as DashboardStore)
         .luck_wheel_config?.prizes,
@@ -153,13 +158,13 @@ export default function Index() {
     const { prizes } = luck_wheel_config || {};
     if (isNil(prizes)) return;
 
-    const upPrizes = produce(prizes, (draft) => {
+    const downPrizes = produce(prizes, (draft) => {
       [draft[index], draft[index + 1]] = [draft[index + 1], draft[index]];
     });
 
     useDashboardStore.setState(
       produce<DashboardStore>((draft) => {
-        draft.luck_wheel_config = upPrizes.map(
+        draft.luck_wheel_config = downPrizes.map(
           ({ key: iKey, fonts, background, range }) => ({
             key: iKey!,
             text: fonts?.[0].text ?? '',
@@ -169,7 +174,7 @@ export default function Index() {
         );
       })
     );
-    setFormValue(upPrizes);
+    setFormValue(downPrizes);
     vibrateShort();
   };
 
@@ -180,8 +185,13 @@ export default function Index() {
     });
   });
 
-  useDidHide(() => {
-    const formValues = getValues();
+  useDidShow(() => setWatchTrue());
+
+  useDidHide(() => setWatchFalse());
+
+  useEffect(() => {
+    // 离开(hide)页面，主动取消监听
+    if (!isNeedWaching) return;
 
     useDashboardStore.setState(
       produce<DashboardStore>((draft) => {
@@ -193,7 +203,7 @@ export default function Index() {
         draft.dashboard_title = formValues[WheelTitleField];
       })
     );
-  });
+  }, [formValues, isNeedWaching]);
 
   return (
     <Form>
