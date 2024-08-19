@@ -1,5 +1,5 @@
 import { switchTab, navigateTo, useDidShow } from '@tarojs/taro';
-import { View, Button, Input } from '@tarojs/components';
+import { View, Input } from '@tarojs/components';
 import { useSearchStore } from '@/stores/search';
 import { DashboardType, useDashboardStore } from '@/stores/dashboard';
 import { lunchEat, todayPayTheBill } from '@/consts';
