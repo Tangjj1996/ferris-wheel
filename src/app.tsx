@@ -8,13 +8,12 @@ import './app.less';
 const queryClient = new QueryClient();
 
 function App({ children }: PropsWithChildren<any>) {
-  // children 是将要会渲染的页面
   useLaunch(async () => {
     const { code } = await login();
     const res = await getOpenid(code);
-    console.log(res);
   });
 
+  // children 是将要会渲染的页面
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
