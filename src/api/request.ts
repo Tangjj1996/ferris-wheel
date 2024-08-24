@@ -7,7 +7,7 @@ type RequestOptions<T, U> = Parameters<typeof _request<T, U>>[number];
 
 const baseUrl = (() => {
   if (isDev()) {
-    return 'http://localhost:3000';
+    return 'http://localhost:3000/api';
   }
   return '';
 })();
@@ -15,7 +15,7 @@ const baseUrl = (() => {
 export const request = async <T, U = any>(optoins: RequestOptions<T, U>) => {
   const defaultOptions: Partial<RequestOptions<T, U>> = {
     header: {
-      accessToken: getStorageSync(LocalStorageKey.accessToken),
+      openid: getStorageSync(LocalStorageKey.openId),
     },
   };
   const mergedOptinos = merge(defaultOptions, optoins);
