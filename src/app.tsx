@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useLaunch, login, setStorageSync } from '@tarojs/taro';
+import { useLaunch, login, setStorageSync, getStorageSync } from '@tarojs/taro';
 import { getOpenid } from './api/common/getOpenid';
 import { getConfig } from './api/common/getConfig';
 import './app.less';
@@ -11,12 +11,14 @@ const queryClient = new QueryClient();
 
 function App({ children }: PropsWithChildren<any>) {
   useLaunch(async () => {
-    const { code } = await login();
-    const { data } = (await getOpenid(code)) || {};
-    const {
-      data: { openid },
-    } = data || {};
-    setStorageSync(LocalStorageKey.openId, openid);
+    if (!getStorageSync(LocalStorageKey.openId)) {
+      const { code } = await login();
+      const { data } = (await getOpenid(code)) || {};
+      const {
+        data: { openid },
+      } = data || {};
+      setStorageSync(LocalStorageKey.openId, openid);
+    }
     await getConfig();
   });
 
