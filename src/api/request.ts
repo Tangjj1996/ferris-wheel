@@ -7,7 +7,7 @@ type RequestOptions<T, U> = Parameters<typeof _request<T, U>>[number];
 
 const baseUrl = (() => {
   if (isDev()) {
-    return '';
+    return 'http://localhost:3000';
   }
   return '';
 })();
@@ -27,5 +27,7 @@ export const request = async <T, U = any>(optoins: RequestOptions<T, U>) => {
     }
 
     return result;
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 };
