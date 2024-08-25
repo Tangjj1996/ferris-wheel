@@ -24,3 +24,34 @@ export enum HttpStatus {
   SERVICE_UNAVAILABLE = 503,
   GATEWAY_TIMEOUT = 504,
 }
+
+export enum DashboardEatIndex {
+  /**
+   * 早餐
+   */
+  breakfast,
+  /**
+   * 午餐
+   */
+  lunch,
+  /**
+   * 下午茶
+   */
+  afternoon_tea,
+  /**
+   * 晚餐
+   */
+  dinner,
+  /**
+   * 夜宵
+   */
+  midnight_snack,
+  /**
+   * 随便吃
+   */
+  casual_meal,
+  /**
+   * 附近
+   */
+  nearby,
+}

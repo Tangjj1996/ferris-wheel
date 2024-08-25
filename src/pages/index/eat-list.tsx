@@ -1,16 +1,16 @@
-import { useState } from 'react';
 import { navigateTo } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import { useDashboardStore } from '@/stores/dashboard';
+import { useSearchStore } from '@/stores/search';
 import { useCommonStore } from '@/stores/common';
 import { eatConfig, Eat } from './shared';
 
 const EatList = () => {
   const configData = useCommonStore((s) => s.configData);
-  const [activeKey, setActivekey] = useState<Eat>(Eat.breakfast);
+  const selectedKey = useSearchStore((s) => s.selectedKey);
 
   const handleClick = (key: Eat, index: number) => {
-    setActivekey(key);
+    useSearchStore.setState({ selectedKey: key });
     if (key === Eat.nearby) {
       // todo 先获取授权
       navigateTo({ url: '/pages/nearby/index' });
@@ -31,7 +31,7 @@ const EatList = () => {
         <View
           key={key}
           className={`flex justify-around items-center h-5 bg-blue-100 p-4 rounded-lg gap-x-2 ${
-            activeKey === key && 'bg-purple-200'
+            selectedKey === key && 'bg-purple-200'
           }`}
           onClick={() => handleClick(key, index)}
         >

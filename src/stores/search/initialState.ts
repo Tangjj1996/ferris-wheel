@@ -1,4 +1,4 @@
-import { lunchEat } from '@/consts';
+import { DashboardEatIndex } from '@/enums';
 import { DashboardType } from '../dashboard';
 
 export interface SearchList {
@@ -11,8 +11,9 @@ export interface SearchList {
 export interface State {
   searchList?: SearchList[];
   selectedKey?: string;
+  selectedIndex: number;
 }
 
 export const initialState: State = {
-  selectedKey: lunchEat.key,
+  selectedIndex: DashboardEatIndex.breakfast,
 };

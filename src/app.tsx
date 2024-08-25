@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useLaunch, login, setStorageSync, getStorageSync } from '@tarojs/taro';
 import { getOpenid } from './api/common/getOpenid';
 import { getConfig } from './api/common/getConfig';
-import { LocalStorageKey } from './enums';
+import { DashboardEatIndex, LocalStorageKey } from './enums';
 import { useDashboardStore } from './stores/dashboard';
 import { useCommonStore } from './stores/common';
 import { exceptionBiz } from './lib/utils';
@@ -31,8 +31,8 @@ function App({ children }: PropsWithChildren<any>) {
 
       if (userData && userData.length) {
         useCommonStore.setState({ configData: userData });
-        useDashboardStore.setState(userData[0]);
-        setDefaultDashboard(userData[0]);
+        useDashboardStore.setState(userData[DashboardEatIndex.breakfast]);
+        setDefaultDashboard(userData[DashboardEatIndex.breakfast]);
       }
     } catch (e) {
       exceptionBiz(e);

@@ -7,15 +7,16 @@ import {
   DashboardType,
   beConfig2FeConfig,
 } from '@/stores/dashboard';
-import { lunchEat } from '@/consts';
+import { DashboardEatIndex } from '@/enums';
 import { useSearchStore } from '@/stores/search';
 import EatList from './eat-list';
+import { eatConfig } from './shared';
 
 export default function Index() {
   const { dashboard_type, dashboard_title, generateRandomIndex } =
     useDashboardStore();
   const { luck_wheel_config } = useDashboardStore(beConfig2FeConfig);
-  const selectedKey = useSearchStore((s) => s.selectedKey);
+  const selectedIndex = useSearchStore((s) => s.selectedIndex);
   const lukyRef = useRef<any>();
 
   return (
@@ -39,7 +40,7 @@ export default function Index() {
               vibrateLong();
             }}
           />
-          {selectedKey === lunchEat.key && <EatList />}
+          {selectedIndex < eatConfig.length - 2 && <EatList />}
         </>
       )}
     </View>
