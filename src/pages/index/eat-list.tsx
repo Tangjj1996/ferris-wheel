@@ -25,9 +25,13 @@ const EatList = () => {
     }
   };
 
+  if (!configData?.length) {
+    return null;
+  }
+
   return (
     <View className="flex flex-wrap gap-2 p-4 mt-5">
-      {getEatConfig(configData ?? []).map(({ text, key, icon }, index) => (
+      {getEatConfig(configData).map(({ text, key, icon }, index) => (
         <View
           key={key}
           className={`flex justify-around items-center h-5 bg-blue-100 p-4 rounded-lg gap-x-2 ${

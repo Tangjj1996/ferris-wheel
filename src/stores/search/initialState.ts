@@ -1,4 +1,3 @@
-import { DashboardEatIndex } from '@/enums';
 import { DashboardType } from '../dashboard';
 
 export interface SearchList {
@@ -11,9 +10,6 @@ export interface SearchList {
 export interface State {
   searchList?: SearchList[];
   selectedKey?: string;
-  selectedIndex: number;
 }
 
-export const initialState: State = {
-  selectedIndex: DashboardEatIndex.breakfast,
-};
+export const initialState: State = {};

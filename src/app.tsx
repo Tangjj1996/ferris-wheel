@@ -8,6 +8,7 @@ import { useDashboardStore } from './stores/dashboard';
 import { useCommonStore } from './stores/common';
 import { exceptionBiz } from './lib/utils';
 import './app.less';
+import { useSearchStore } from './stores/search';
 
 // create a client
 const queryClient = new QueryClient();
@@ -32,6 +33,9 @@ function App({ children }: PropsWithChildren<any>) {
       if (userData && userData.length) {
         useCommonStore.setState({ configData: userData });
         useDashboardStore.setState(userData[DashboardEatIndex.breakfast]);
+        useSearchStore.setState({
+          selectedKey: userData[DashboardEatIndex.breakfast].key,
+        });
         setDefaultDashboard(userData[DashboardEatIndex.breakfast]);
       }
     } catch (e) {

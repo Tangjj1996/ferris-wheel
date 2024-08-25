@@ -24,9 +24,8 @@ export default function Index() {
    * 点击搜索列表
    * @param key
    */
-  const handleClick = (selectedKey: string, index: number) => {
+  const handleClick = (selectedKey: string) => {
     useSearchStore.setState({
-      selectedIndex: index,
       selectedKey: selectedKey,
     });
     const selectConfigData = configData?.find(({ key }) => key === selectedKey);
@@ -41,11 +40,11 @@ export default function Index() {
       <View>
         <Input onClick={() => navigateTo({ url: '/pages/nearby/index' })} />
       </View>
-      {searchList?.map(({ text, key }, index) => (
+      {searchList?.map(({ text, key }) => (
         <View
           key={key}
           className="p-4 bg-gray-50 rounded-lg shadow-sm"
-          onClick={() => handleClick(key, index)}
+          onClick={() => handleClick(key)}
         >
           <View className="text-lg font-semibold text-gray-800">{text}</View>
         </View>
