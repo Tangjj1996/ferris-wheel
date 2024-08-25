@@ -7,6 +7,7 @@ import { useDashboardStore } from '@/stores/dashboard';
 export default function Index() {
   const searchList = useSearchStore((s) => s.searchList);
   const configData = useCommonStore((s) => s.configData);
+  const setDefaultDashboard = useDashboardStore((s) => s.setDefaultDashboard);
 
   useDidShow(() => {
     useSearchStore.setState({
@@ -31,6 +32,7 @@ export default function Index() {
     const selectConfigData = configData?.find(({ key }) => key === selectedKey);
     if (selectConfigData) {
       useDashboardStore.setState(selectConfigData);
+      setDefaultDashboard(selectConfigData);
     }
     switchTab({ url: '/pages/index/index' });
   };

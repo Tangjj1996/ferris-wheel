@@ -8,6 +8,7 @@ import { getEatConfig, Eat } from './shared';
 const EatList = () => {
   const configData = useCommonStore((s) => s.configData);
   const selectedKey = useSearchStore((s) => s.selectedKey);
+  const setDefaultDashboard = useDashboardStore((s) => s.setDefaultDashboard);
 
   const handleClick = (key: Eat | string, index: number) => {
     useSearchStore.setState({ selectedKey: key });
@@ -22,6 +23,7 @@ const EatList = () => {
 
     if (configData && configData.length) {
       useDashboardStore.setState(configData[index]);
+      setDefaultDashboard(configData[index]);
     }
   };
 
