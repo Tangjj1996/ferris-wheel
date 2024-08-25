@@ -4,7 +4,7 @@ export interface ConfigResponse {
   code: number;
   msg: string;
   traceId: string;
-  data: ConfigData;
+  data: ConfigData[];
 }
 
 interface ConfigData {

@@ -24,16 +24,16 @@ export default function Index() {
   const selectedKey = useSearchStore((s) => s.selectedKey);
   const lukyRef = useRef<any>();
 
-  useLoad(() => {
-    const dashboard = getStorageSync(LocalStorageKey.dashboard);
-    if (dashboard && dashboard?.state?.luck_wheel_config) {
-      // localStorage 已有，不需要再设置
-      return;
-    }
+  // useLoad(() => {
+  //   const dashboard = getStorageSync(LocalStorageKey.dashboard);
+  //   if (dashboard && dashboard?.state?.luck_wheel_config) {
+  //     // localStorage 已有，不需要再设置
+  //     return;
+  //   }
 
-    useDashboardStore.setState(lunchEat as unknown as ConfigData);
-    setDefaultDashboard(lunchEat as unknown as ConfigData);
-  });
+  //   useDashboardStore.setState(lunchEat as unknown as ConfigData);
+  //   setDefaultDashboard(lunchEat as unknown as ConfigData);
+  // });
 
   return (
     <View className="flex flex-col h-full justify-center items-center">

@@ -3,23 +3,37 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useLaunch, login, setStorageSync, getStorageSync } from '@tarojs/taro';
 import { getOpenid } from './api/common/getOpenid';
 import { getConfig } from './api/common/getConfig';
-import './app.less';
 import { LocalStorageKey } from './enums';
+import { useDashboardStore } from './stores/dashboard';
+import { ConfigData } from './api/common/config';
+import { exceptionBiz } from './lib/utils';
+import './app.less';
 
 // create a client
 const queryClient = new QueryClient();
 
 function App({ children }: PropsWithChildren<any>) {
+  const { setDefaultDashboard } = useDashboardStore();
+
+  // 启动的时候用一次，后面就用本地数据
   useLaunch(async () => {
-    if (!getStorageSync(LocalStorageKey.openId)) {
-      const { code } = await login();
-      const { data } = (await getOpenid(code)) || {};
-      const {
-        data: { openid },
-      } = data || {};
-      setStorageSync(LocalStorageKey.openId, openid);
+    try {
+      if (!getStorageSync(LocalStorageKey.openId)) {
+        const { code } = await login();
+        const { data } = (await getOpenid(code)) || {};
+        const {
+          data: { openid },
+        } = data || {};
+        setStorageSync(LocalStorageKey.openId, openid);
+      }
+      const { data: userResult } = (await getConfig()) || {};
+      const { data: userData } = userResult || {};
+
+      useDashboardStore.setState(userData?.[0] as unknown as ConfigData);
+      setDefaultDashboard(userData?.[0] as unknown as ConfigData);
+    } catch (e) {
+      exceptionBiz(e);
     }
-    await getConfig();
   });
 
   // children 是将要会渲染的页面
