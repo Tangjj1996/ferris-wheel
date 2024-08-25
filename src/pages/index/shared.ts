@@ -5,6 +5,7 @@ import utensilsPath from '@/assets/icon/utensils.svg';
 import wheatPath from '@/assets/icon/wheat.svg';
 import snailPath from '@/assets/icon/snail.svg';
 import mapPinPath from '@/assets/icon/map-pin.svg';
+import { ConfigData } from '@/api/common/config';
 
 export enum Eat {
   breakfast = 'breakfast',
@@ -16,30 +17,30 @@ export enum Eat {
   nearby = 'nearby',
 }
 
-export const eatConfig = [
+export const getEatConfig = (commonData: ConfigData[]) => [
   {
     text: '早餐',
-    key: Eat.breakfast,
+    key: commonData[0].key,
     icon: eggPath,
   },
   {
     text: '午餐',
-    key: Eat.lunch,
+    key: commonData[1].key,
     icon: beefPath,
   },
   {
     text: '下午茶',
-    key: Eat.afternoon_tea,
+    key: commonData[2].key,
     icon: soupPath,
   },
   {
     text: '晚餐',
-    key: Eat.dinner,
+    key: commonData[3].key,
     icon: utensilsPath,
   },
   {
     text: '夜宵',
-    key: Eat.midnight_snack,
+    key: commonData[4].key,
     icon: wheatPath,
   },
   {

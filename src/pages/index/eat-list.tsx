@@ -3,13 +3,13 @@ import { View, Image } from '@tarojs/components';
 import { useDashboardStore } from '@/stores/dashboard';
 import { useSearchStore } from '@/stores/search';
 import { useCommonStore } from '@/stores/common';
-import { eatConfig, Eat } from './shared';
+import { getEatConfig, Eat } from './shared';
 
 const EatList = () => {
   const configData = useCommonStore((s) => s.configData);
   const selectedKey = useSearchStore((s) => s.selectedKey);
 
-  const handleClick = (key: Eat, index: number) => {
+  const handleClick = (key: Eat | string, index: number) => {
     useSearchStore.setState({ selectedKey: key });
     if (key === Eat.nearby) {
       // todo 先获取授权
@@ -27,7 +27,7 @@ const EatList = () => {
 
   return (
     <View className="flex flex-wrap gap-2 p-4 mt-5">
-      {eatConfig.map(({ text, key, icon }, index) => (
+      {getEatConfig(configData ?? []).map(({ text, key, icon }, index) => (
         <View
           key={key}
           className={`flex justify-around items-center h-5 bg-blue-100 p-4 rounded-lg gap-x-2 ${

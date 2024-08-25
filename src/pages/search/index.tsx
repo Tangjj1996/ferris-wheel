@@ -3,7 +3,6 @@ import { View, Input } from '@tarojs/components';
 import { useSearchStore } from '@/stores/search';
 import { useCommonStore } from '@/stores/common';
 import { useDashboardStore } from '@/stores/dashboard';
-import { eatConfig } from '../index/shared';
 
 export default function Index() {
   const searchList = useSearchStore((s) => s.searchList);
@@ -28,7 +27,7 @@ export default function Index() {
   const handleClick = (selectedKey: string, index: number) => {
     useSearchStore.setState({
       selectedIndex: index,
-      selectedKey: index < eatConfig.length - 2 ? eatConfig[index].key : '',
+      selectedKey: selectedKey,
     });
     const selectConfigData = configData?.find(({ key }) => key === selectedKey);
     if (selectConfigData) {

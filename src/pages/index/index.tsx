@@ -6,18 +6,37 @@ import {
   useDashboardStore,
   DashboardType,
   beConfig2FeConfig,
+  DashboardOption,
 } from '@/stores/dashboard';
-import { DashboardEatIndex } from '@/enums';
 import { useSearchStore } from '@/stores/search';
+import { useCommonStore } from '@/stores/common';
 import EatList from './eat-list';
-import { eatConfig } from './shared';
+import { Eat } from './shared';
 
 export default function Index() {
   const { dashboard_type, dashboard_title, generateRandomIndex } =
     useDashboardStore();
   const { luck_wheel_config } = useDashboardStore(beConfig2FeConfig);
-  const selectedIndex = useSearchStore((s) => s.selectedIndex);
+  const configData = useCommonStore((s) => s.configData);
+  const selectedKey = useSearchStore((s) => s.selectedKey);
   const lukyRef = useRef<any>();
+
+  const renderEatList = () => {
+    if ([Eat.casual_meal, Eat.nearby].includes(selectedKey as Eat)) {
+      return <EatList />;
+    }
+
+    if (
+      configData
+        ?.filter(
+          ({ dashboard_option }) => dashboard_option === DashboardOption.eat
+        )
+        ?.some(({ key }) => key === selectedKey)
+    ) {
+      return <EatList />;
+    }
+    return null;
+  };
 
   return (
     <View className="flex flex-col h-full justify-center items-center">
@@ -40,7 +59,7 @@ export default function Index() {
               vibrateLong();
             }}
           />
-          {selectedIndex < eatConfig.length - 2 && <EatList />}
+          {renderEatList()}
         </>
       )}
     </View>
