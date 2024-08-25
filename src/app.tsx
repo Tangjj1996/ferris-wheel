@@ -5,7 +5,7 @@ import { getOpenid } from './api/common/getOpenid';
 import { getConfig } from './api/common/getConfig';
 import { LocalStorageKey } from './enums';
 import { useDashboardStore } from './stores/dashboard';
-import { ConfigData } from './api/common/config';
+import { useCommonStore } from './stores/common';
 import { exceptionBiz } from './lib/utils';
 import './app.less';
 
@@ -29,8 +29,11 @@ function App({ children }: PropsWithChildren<any>) {
       const { data: userResult } = (await getConfig()) || {};
       const { data: userData } = userResult || {};
 
-      useDashboardStore.setState(userData?.[0] as unknown as ConfigData);
-      setDefaultDashboard(userData?.[0] as unknown as ConfigData);
+      if (userData && userData.length) {
+        useCommonStore.setState({ configData: userData });
+        useDashboardStore.setState(userData[0]);
+        setDefaultDashboard(userData[0]);
+      }
     } catch (e) {
       exceptionBiz(e);
     }
