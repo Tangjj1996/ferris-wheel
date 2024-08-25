@@ -6,7 +6,7 @@ import wheatPath from '@/assets/icon/wheat.svg';
 import snailPath from '@/assets/icon/snail.svg';
 import mapPinPath from '@/assets/icon/map-pin.svg';
 
-export enum Eeat {
+export enum Eat {
   breakfast = 'breakfast',
   lunch = 'lunch',
   afternoon_tea = 'afternoon_tea',
@@ -19,37 +19,37 @@ export enum Eeat {
 export const eatConfig = [
   {
     text: '早餐',
-    key: Eeat.breakfast,
+    key: Eat.breakfast,
     icon: eggPath,
   },
   {
     text: '午餐',
-    key: Eeat.lunch,
+    key: Eat.lunch,
     icon: beefPath,
   },
   {
     text: '下午茶',
-    key: Eeat.afternoon_tea,
+    key: Eat.afternoon_tea,
     icon: soupPath,
   },
   {
     text: '晚餐',
-    key: Eeat.dinner,
+    key: Eat.dinner,
     icon: utensilsPath,
   },
   {
     text: '夜宵',
-    key: Eeat.midnight_snack,
+    key: Eat.midnight_snack,
     icon: wheatPath,
   },
   {
     text: '随便吃吃',
-    key: Eeat.casual_meal,
+    key: Eat.casual_meal,
     icon: snailPath,
   },
   {
     text: '附近',
-    key: Eeat.nearby,
+    key: Eat.nearby,
     icon: mapPinPath,
   },
 ];
