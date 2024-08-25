@@ -24,6 +24,7 @@ import {
   useDashboardStore,
   Store as DashboardStore,
 } from '@/stores/dashboard';
+import { useSearchStore } from '@/stores/search';
 import ColorPicker from './color-picker';
 import { PrizesField, WheelTitleField } from './shared';
 
@@ -58,6 +59,7 @@ export default function Index() {
     if (isNil(default_initial_state)) return;
 
     useDashboardStore.setState(default_initial_state);
+    useSearchStore.setState({ selectedKey: default_initial_state.key });
     setFormValue(
       beConfig2FeConfig(default_initial_state as DashboardStore)
         .luck_wheel_config?.prizes,

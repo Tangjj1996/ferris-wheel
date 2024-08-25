@@ -8,6 +8,17 @@ import type {
 
 export type { LuckyWheelConfig, LuckyGridConfig, SlotMachineConfig };
 
+export enum DashboardOption {
+  /**
+   * 吃
+   */
+  eat = 'eat',
+  /**
+   * 买单
+   */
+  money = 'money',
+}
+
 export enum DashboardType {
   /**
    * 大转盘

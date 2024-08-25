@@ -1,5 +1,5 @@
 import { ConfigData } from '@/api/common/config';
-import { DashboardType } from './shared';
+import { DashboardOption, DashboardType } from './shared';
 
 export interface State {
   /**
@@ -10,6 +10,10 @@ export interface State {
    * 转盘标题
    */
   dashboard_title?: string;
+  /**
+   * 转盘选项
+   */
+  dashboard_option?: DashboardOption;
   /**
    * 大盘类型
    *
