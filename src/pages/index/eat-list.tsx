@@ -3,6 +3,7 @@ import { View, Image } from '@tarojs/components';
 import { useDashboardStore } from '@/stores/dashboard';
 import { useSearchStore } from '@/stores/search';
 import { useCommonStore } from '@/stores/common';
+import { getRandomConfig } from '@/api/common/getRandom';
 import { getEatConfig, Eat } from './shared';
 
 const EatList = () => {
@@ -10,7 +11,7 @@ const EatList = () => {
   const selectedKey = useSearchStore((s) => s.selectedKey);
   const setDefaultDashboard = useDashboardStore((s) => s.setDefaultDashboard);
 
-  const handleClick = (key: Eat | string, index: number) => {
+  const handleClick = async (key: Eat | string, index: number) => {
     useSearchStore.setState({ selectedKey: key });
     if (key === Eat.nearby) {
       // todo 先获取授权
@@ -18,6 +19,18 @@ const EatList = () => {
       return;
     }
     if (key === Eat.casual_meal) {
+      const { data: wrapData } = (await getRandomConfig()) || {};
+      const { data: randomData } = wrapData || {};
+      if (randomData && randomData.length) {
+        useDashboardStore.setState({
+          luck_wheel_config: randomData!,
+          dashboard_title: '随便吃吃',
+        });
+        setDefaultDashboard({
+          luck_wheel_config: randomData,
+          dashboard_title: '随便吃吃',
+        });
+      }
       return;
     }
 
