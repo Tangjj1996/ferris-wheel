@@ -48,9 +48,9 @@ export const getEatConfig = (commonData: ConfigData[]) => [
     key: Eat.casual_meal,
     icon: snailPath,
   },
-  {
-    text: '附近',
-    key: Eat.nearby,
-    icon: mapPinPath,
-  },
+  // {
+  //   text: '附近',
+  //   key: Eat.nearby,
+  //   icon: mapPinPath,
+  // },
 ];

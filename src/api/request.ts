@@ -7,7 +7,7 @@ type RequestOptions<T, U> = Parameters<typeof _request<T, U>>[number];
 
 const baseUrl = (() => {
   if (isDev()) {
-    return 'http://localhost:3000/api';
+    return 'https://139.224.19.37/api';
   }
   return '';
 })();
