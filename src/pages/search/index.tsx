@@ -39,9 +39,9 @@ export default function Index() {
 
   return (
     <View className="flex flex-col gap-y-4">
-      <View>
+      {/* <View>
         <Input onClick={() => navigateTo({ url: '/pages/nearby/index' })} />
-      </View>
+      </View> */}
       {searchList?.map(({ text, key }) => (
         <View
           key={key}
