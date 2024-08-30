@@ -7,7 +7,7 @@ type RequestOptions<T, U> = Parameters<typeof _request<T, U>>[number];
 
 const baseUrl = (() => {
   if (isDev()) {
-    return 'https://139.224.19.37/api';
+    return 'https://ferris-wheel.jianjie.fun/api';
   }
   return '';
 })();
