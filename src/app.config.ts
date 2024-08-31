@@ -19,7 +19,7 @@ export default defineAppConfig({
       },
       {
         pagePath: 'pages/search/index',
-        text: '搜索',
+        text: '列表',
       },
       {
         pagePath: 'pages/config/index',
