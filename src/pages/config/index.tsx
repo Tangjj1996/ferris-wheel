@@ -253,7 +253,7 @@ export default function Index() {
             <View className="w-5/12 text-sm text-gray-500">区块</View>
             <View className="w-2/12 text-sm text-gray-500">色板</View>
             <View className="w-2/12 text-sm text-gray-500">权重</View>
-            <View className="w-5/12 text-sm text-gray-500">操作</View>
+            <View className="w-3/12 text-sm text-gray-500">操作</View>
           </View>
           {luck_wheel_config?.prizes?.map(({ key }, index) => (
             <View className="flex items-center gap-x-4 h-14" key={key}>
