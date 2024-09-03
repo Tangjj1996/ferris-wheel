@@ -334,14 +334,20 @@ export default function Index() {
           ))}
           <View className="flex justify-between items-center gap-x-4 mt-4">
             <Button
-              className="border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/2"
+              className="border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/3"
+              onClick={handleReset}
+            >
+              收藏
+            </Button>
+            <Button
+              className="border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/3"
               onClick={handleReset}
             >
               重置
             </Button>
             <Button
               className="
-            border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/2"
+            border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/3"
               onClick={handleAdd}
             >
               新增
