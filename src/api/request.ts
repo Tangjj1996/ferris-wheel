@@ -7,9 +7,9 @@ type RequestOptions<T, U> = Parameters<typeof _request<T, U>>[number];
 
 const baseUrl = (() => {
   if (isDev()) {
-    return 'https://139.224.19.37/api';
+    return 'http://localhost:3000/api';
   }
-  return '';
+  return 'https://ferris-wheel.jianjie.fun/api';
 })();
 
 export const request = async <T, U = any>(optoins: RequestOptions<T, U>) => {

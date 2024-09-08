@@ -253,7 +253,7 @@ export default function Index() {
             <View className="w-5/12 text-sm text-gray-500">区块</View>
             <View className="w-2/12 text-sm text-gray-500">色板</View>
             <View className="w-2/12 text-sm text-gray-500">权重</View>
-            <View className="w-5/12 text-sm text-gray-500">操作</View>
+            <View className="w-3/12 text-sm text-gray-500">操作</View>
           </View>
           {luck_wheel_config?.prizes?.map(({ key }, index) => (
             <View className="flex items-center gap-x-4 h-14" key={key}>
@@ -334,14 +334,20 @@ export default function Index() {
           ))}
           <View className="flex justify-between items-center gap-x-4 mt-4">
             <Button
-              className="border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/2"
+              className="border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/3"
+              onClick={handleReset}
+            >
+              收藏
+            </Button>
+            <Button
+              className="border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/3"
               onClick={handleReset}
             >
               重置
             </Button>
             <Button
               className="
-            border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/2"
+            border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/3"
               onClick={handleAdd}
             >
               新增

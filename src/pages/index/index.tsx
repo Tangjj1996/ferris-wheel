@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { vibrateLong, useShareAppMessage } from '@tarojs/taro';
-import { Button, View } from '@tarojs/components';
+import { vibrateLong } from '@tarojs/taro';
+import { View } from '@tarojs/components';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
 import {
   useDashboardStore,
@@ -24,12 +24,6 @@ export default function Index() {
     <View className="flex flex-col h-full justify-center items-center">
       <View className="flex justify-center items-center absolute top-5">
         {dashboard_title}
-      </View>
-      <View className="flex item-center">
-        转发到群即可自动配置群成员
-        <Button openType="share" className="w-1">
-          👉
-        </Button>
       </View>
       {dashboard_type === DashboardType.wheel && (
         <>
