@@ -30,7 +30,7 @@ jobs:
 
       - name: Compile
         id: preview
-        uses: crazyurus/miniprogram-action@1.0.0
+        uses: crazyurus/miniprogram-action@2.0.0
         with:
           action_type: preview
           project_path: dist
