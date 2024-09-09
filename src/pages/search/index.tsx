@@ -1,5 +1,5 @@
-import { switchTab, navigateTo, useDidShow } from '@tarojs/taro';
-import { View, Input } from '@tarojs/components';
+import { switchTab, useDidShow } from '@tarojs/taro';
+import { View } from '@tarojs/components';
 import { useSearchStore } from '@/stores/search';
 import { useCommonStore } from '@/stores/common';
 import { useDashboardStore } from '@/stores/dashboard';
@@ -39,9 +39,6 @@ export default function Index() {
 
   return (
     <View className="flex flex-col gap-y-4">
-      {/* <View>
-        <Input onClick={() => navigateTo({ url: '/pages/nearby/index' })} />
-      </View> */}
       {searchList?.map(({ text, key }) => (
         <View
           key={key}
