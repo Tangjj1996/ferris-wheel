@@ -6,10 +6,9 @@ import {
 import { persist } from 'zustand/middleware';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
-import { LocalStorageKey } from '@/enums';
+import { LocalStorageKey, DashboardType } from '@/enums';
 import { ConfigData } from '@/api/common/config';
 import { initialState, State } from './initialState';
-import { DashboardType } from './shared';
 
 export interface Action {
   setDefaultDashboard: (payload: Partial<ConfigData>) => void;

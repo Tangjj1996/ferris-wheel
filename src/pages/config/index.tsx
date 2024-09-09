@@ -25,6 +25,9 @@ import {
   Store as DashboardStore,
 } from '@/stores/dashboard';
 import { useSearchStore } from '@/stores/search';
+import { postCollection } from '@/api/user/postCollection';
+import { CollectionReq } from '@/api/user/Collection';
+import { HttpStatus } from '@/enums';
 import ColorPicker from './color-picker';
 import { PrizesField, WheelTitleField } from './shared';
 
@@ -51,6 +54,47 @@ export default function Index() {
     });
     if (title) {
       setValue(WheelTitleField, title);
+    }
+  };
+
+  /** 收藏 */
+  const handleCollection = async () => {
+    const { dashboard_type, dashboard_option } =
+      useDashboardStore.getState() || {};
+    if (
+      isNil(dashboard_title) ||
+      isNil(dashboard_type) ||
+      isNil(dashboard_option) ||
+      isNil(luck_wheel_config)
+    ) {
+      showToast({ title: '「转盘名称」字段必填' });
+      return;
+    }
+
+    try {
+      const params: CollectionReq = {
+        dashboard_title,
+        dashboard_type,
+        dashboard_option,
+        user_dashboard_config_items: (
+          luck_wheel_config.prizes as NonNullable<
+            typeof luck_wheel_config.prizes
+          >
+        ).map(({ fonts, background, range }) => ({
+          text: (fonts as any)[0].text ?? '',
+          background: background!,
+          priority: range!,
+        })),
+      };
+
+      const result = await postCollection(params);
+      if (result.data.code === HttpStatus.OK || HttpStatus.CREATED) {
+        showToast({ title: '收藏成功' });
+      } else {
+        throw new Error(result.data.msg);
+      }
+    } catch (e) {
+      showToast({ title: '收藏失败', icon: 'error' });
     }
   };
 
@@ -335,7 +379,7 @@ export default function Index() {
           <View className="flex justify-between items-center gap-x-4 mt-4">
             <Button
               className="border border-dashed border-blue-500 text-blue-500 bg-transparent w-1/3"
-              onClick={handleReset}
+              onClick={handleCollection}
             >
               收藏
             </Button>

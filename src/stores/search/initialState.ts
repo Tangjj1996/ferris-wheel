@@ -1,4 +1,4 @@
-import { DashboardType } from '../dashboard';
+import { DashboardType } from '@/enums';
 
 export interface SearchList {
   text: string;

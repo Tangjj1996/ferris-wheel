@@ -1,4 +1,4 @@
-import { request } from '../request';
+import { request } from '@/lib/request';
 import { ConfigResponse } from './config';
 
 export const getConfig = () => {

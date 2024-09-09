@@ -2,12 +2,8 @@ import { useRef } from 'react';
 import { vibrateLong } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
-import {
-  useDashboardStore,
-  DashboardType,
-  beConfig2FeConfig,
-  DashboardOption,
-} from '@/stores/dashboard';
+import { useDashboardStore, beConfig2FeConfig } from '@/stores/dashboard';
+import { DashboardType, DashboardOption } from '@/enums';
 import EatList from './eat-list';
 
 export default function Index() {

@@ -1,4 +1,4 @@
-import { DashboardOption, DashboardType } from '@/stores/dashboard/shared';
+import { DashboardOption, DashboardType } from '@/enums';
 
 export interface ConfigResponse {
   code: number;
@@ -7,7 +7,7 @@ export interface ConfigResponse {
   data: ConfigData[];
 }
 
-interface ConfigData {
+export interface ConfigData {
   key: string;
   dashboard_title: string;
   dashboard_type: DashboardType;
@@ -17,13 +17,13 @@ interface ConfigData {
   slot_machine_config: SlotMachineConfig[] | null;
 }
 
-interface LuckyWheelConfig {
+export interface LuckyWheelConfig {
   text: string;
   priority: null | number;
   background: string;
   key: string;
 }
 
-interface LuckyGridConfig {}
+export interface LuckyGridConfig {}
 
-interface SlotMachineConfig {}
+export interface SlotMachineConfig {}

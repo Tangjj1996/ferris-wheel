@@ -26,8 +26,19 @@ export const request = async <T, U = any>(optoins: RequestOptions<T, U>) => {
     if (result.statusCode === HttpStatus.UNAUTHORIZED) {
     }
 
+    if (
+      result.statusCode !== HttpStatus.OK &&
+      result.statusCode !== HttpStatus.CREATED
+    ) {
+      /**
+       * http status 统一报错输出
+       * 业务码 code，自行处理
+       *  */
+      throw new Error((result.data as any)?.msg);
+    }
+
     return result;
   } catch (e) {
-    console.error(e);
+    throw new Error(e);
   }
 };

@@ -1,5 +1,5 @@
 import { ConfigData } from '@/api/common/config';
-import { DashboardOption, DashboardType } from './shared';
+import { DashboardOption, DashboardType } from '@/enums';
 
 export interface State {
   /**
