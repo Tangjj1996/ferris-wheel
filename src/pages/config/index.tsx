@@ -83,18 +83,21 @@ export default function Index() {
         ).map(({ fonts, background, range }) => ({
           text: (fonts as any)[0].text ?? '',
           background: background!,
-          priority: range!,
+          priority: range ?? null,
         })),
       };
 
       const result = await postCollection(params);
-      if (result.data.code === HttpStatus.OK || HttpStatus.CREATED) {
+      if (
+        result.data.code === HttpStatus.OK ||
+        result.data.code === HttpStatus.CREATED
+      ) {
         showToast({ title: '收藏成功' });
       } else {
         throw new Error(result.data.msg);
       }
     } catch (e) {
-      showToast({ title: '收藏失败', icon: 'error' });
+      showToast({ title: e.message || '收藏失败', icon: 'error' });
     }
   };
 
