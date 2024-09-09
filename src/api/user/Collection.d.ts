@@ -15,7 +15,7 @@ export interface CollectionItem {
 
 export interface CollectionRes {
   code: number;
-  msg: string;
+  msg: string | string[];
   traceId: string;
   data: null;
 }

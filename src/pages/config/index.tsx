@@ -94,7 +94,12 @@ export default function Index() {
       ) {
         showToast({ title: '收藏成功' });
       } else {
-        throw new Error(result.data.msg);
+        const { msg } = result.data;
+        if (typeof msg === 'string') {
+          throw new Error(msg);
+        } else if (Array.isArray(msg)) {
+          throw new Error(msg.join('\n'));
+        }
       }
     } catch (e) {
       showToast({ title: e.message || '收藏失败', icon: 'error' });

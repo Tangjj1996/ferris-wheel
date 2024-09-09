@@ -39,6 +39,10 @@ export const request = async <T, U = any>(optoins: RequestOptions<T, U>) => {
 
     return result;
   } catch (e) {
-    throw new Error(e);
+    if (e instanceof Error) {
+      throw e;
+    } else {
+      throw new Error(e);
+    }
   }
 };
