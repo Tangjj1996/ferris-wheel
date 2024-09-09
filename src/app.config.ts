@@ -4,6 +4,7 @@ export default defineAppConfig({
     'pages/search/index',
     'pages/config/index',
     'pages/nearby/index',
+    'pages/mine/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -19,11 +20,15 @@ export default defineAppConfig({
       },
       {
         pagePath: 'pages/search/index',
-        text: '列表',
+        text: '热门',
       },
       {
         pagePath: 'pages/config/index',
         text: '配置',
+      },
+      {
+        pagePath: 'pages/mine/index',
+        text: '我的',
       },
     ],
   },
