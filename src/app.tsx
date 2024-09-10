@@ -16,7 +16,6 @@ const queryClient = new QueryClient();
 function App({ children }: PropsWithChildren<any>) {
   const { setDefaultDashboard } = useDashboardStore();
 
-  // 启动的时候用一次，后面就用本地数据
   useLaunch(async () => {
     try {
       if (!getStorageSync(LocalStorageKey.openId)) {
