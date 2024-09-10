@@ -23,11 +23,11 @@ export default function Index() {
             dashboard_type,
             key,
             dashboard_option,
-            hot,
+            is_hot,
           }) => ({
             text: dashboard_title,
             dashboard_type,
-            hot,
+            is_hot,
             key,
             dashboard_option,
           })

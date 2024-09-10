@@ -12,7 +12,7 @@ export interface HotDashboardConfigData {
   dashboard_title: string;
   dashboard_type: DashboardType;
   dashboard_option: DashboardOption;
-  hot: boolean;
+  is_hot: boolean;
   hot_dashboard_config_items: HotDashboardConfigItem[];
 }
 
