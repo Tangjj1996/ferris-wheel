@@ -1,10 +1,13 @@
 import { switchTab, useDidShow } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { useSearchStore } from '@/stores/search';
+import { useDashboardStore } from '@/stores/dashboard';
 import { getHotDashboardConfig } from '@/api/common/getHotDashboardConfig';
 
 export default function Index() {
+  const setDefaultDashboard = useDashboardStore((s) => s.setDefaultDashboard);
   const searchList = useSearchStore((s) => s.searchList);
+  const hotDashboard = useSearchStore((s) => s.hotDashboard);
 
   useDidShow(async () => {
     try {
@@ -13,6 +16,7 @@ export default function Index() {
       } = await getHotDashboardConfig();
 
       useSearchStore.setState({
+        hotDashboard: data,
         searchList: data.map(
           ({
             dashboard_title,
@@ -39,7 +43,20 @@ export default function Index() {
    * @param key
    */
   const handleClick = (selectedKey: string) => {
-    useSearchStore.setState({ selectedKey });
+    const {
+      dashboard_type,
+      dashboard_title,
+      dashboard_option,
+      hot_dashboard_config_items: luck_wheel_config,
+    } = hotDashboard?.find(({ key }) => key === selectedKey) || {};
+    const options = {
+      dashboard_type,
+      dashboard_title,
+      dashboard_option,
+      luck_wheel_config,
+    };
+    useDashboardStore.setState(options);
+    setDefaultDashboard(options);
     switchTab({ url: '/pages/index/index' });
   };
 

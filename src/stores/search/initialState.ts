@@ -1,4 +1,5 @@
 import { DashboardOption, DashboardType } from '@/enums';
+import type { HotDashboardConfigData } from '@/api/common/HotDashboardConfig';
 
 export interface SearchList {
   text: string;
@@ -11,6 +12,7 @@ export interface SearchList {
 export interface State {
   searchList?: SearchList[];
   selectedKey?: string;
+  hotDashboard?: HotDashboardConfigData[];
 }
 
 export const initialState: State = {};
