@@ -1,24 +1,37 @@
 import { switchTab, useDidShow } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { useSearchStore } from '@/stores/search';
-import { useCommonStore } from '@/stores/common';
-import { useDashboardStore } from '@/stores/dashboard';
+import { getHotDashboardConfig } from '@/api/common/getHotDashboardConfig';
 
 export default function Index() {
   const searchList = useSearchStore((s) => s.searchList);
-  const configData = useCommonStore((s) => s.configData);
-  const setDefaultDashboard = useDashboardStore((s) => s.setDefaultDashboard);
 
-  useDidShow(() => {
-    useSearchStore.setState({
-      searchList:
-        configData?.map(({ dashboard_title, dashboard_type, key }) => ({
-          text: dashboard_title,
-          dashboard_type,
-          hot: false,
-          key,
-        })) ?? [],
-    });
+  useDidShow(async () => {
+    try {
+      const {
+        data: { data },
+      } = await getHotDashboardConfig();
+
+      useSearchStore.setState({
+        searchList: data.map(
+          ({
+            dashboard_title,
+            dashboard_type,
+            key,
+            dashboard_option,
+            hot,
+          }) => ({
+            text: dashboard_title,
+            dashboard_type,
+            hot,
+            key,
+            dashboard_option,
+          })
+        ),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   /**
@@ -26,14 +39,7 @@ export default function Index() {
    * @param key
    */
   const handleClick = (selectedKey: string) => {
-    useSearchStore.setState({
-      selectedKey: selectedKey,
-    });
-    const selectConfigData = configData?.find(({ key }) => key === selectedKey);
-    if (selectConfigData) {
-      useDashboardStore.setState(selectConfigData);
-      setDefaultDashboard(selectConfigData);
-    }
+    useSearchStore.setState({ selectedKey });
     switchTab({ url: '/pages/index/index' });
   };
 
