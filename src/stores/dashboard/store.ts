@@ -1,12 +1,6 @@
-import {
-  getStorageSync,
-  setStorageSync,
-  removeStorageSync,
-} from '@tarojs/taro';
-import { persist } from 'zustand/middleware';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
-import { LocalStorageKey, DashboardType } from '@/enums';
+import { DashboardType } from '@/enums';
 import { ConfigData } from '@/api/common/config';
 import { initialState, State } from './initialState';
 
