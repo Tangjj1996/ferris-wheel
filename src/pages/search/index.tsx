@@ -61,14 +61,14 @@ export default function Index() {
   };
 
   return (
-    <View className="flex flex-col gap-y-4">
+    <View className="flex flex-col gap-y-4 p-4">
       {searchList?.map(({ text, key }) => (
         <View
           key={key}
-          className="p-4 bg-gray-50 rounded-lg shadow-sm"
+          className="p-3 bg-gray-50 rounded-sm shadow-sm"
           onClick={() => handleClick(key)}
         >
-          <View className="text-lg font-semibold text-gray-800">{text}</View>
+          <View className="font-medium text-gray-800">{text}</View>
         </View>
       ))}
     </View>
