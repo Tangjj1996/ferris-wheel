@@ -1,9 +1,17 @@
 import { View } from '@tarojs/components';
 import { navigateTo } from '@tarojs/taro';
+import { getConfig } from '@/api/common/getConfig';
+import { useCommonStore } from '@/stores/common';
 
 export default function Index() {
-  const handleCollection = () => {
-    navigateTo({
+  /**
+   * 进入到收藏页面前更新下收藏配置数据
+   */
+  const handleCollection = async () => {
+    const { data } = (await getConfig()) || {};
+    const { data: configData } = data || {};
+    useCommonStore.setState({ configData });
+    await navigateTo({
       url: '/pages/collection/index',
     });
   };
