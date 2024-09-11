@@ -39,7 +39,7 @@ export default function Index() {
   });
 
   /**
-   * 点击搜索列表
+   * 选中
    * @param key
    */
   const handleClick = (selectedKey: string) => {

@@ -5,6 +5,7 @@ export default defineAppConfig({
     'pages/config/index',
     'pages/nearby/index',
     'pages/mine/index',
+    'pages/collection/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -32,12 +33,12 @@ export default defineAppConfig({
         iconPath: './assets/icon/settings.png',
         selectedIconPath: './assets/icon/settings_blue.png',
       },
-      // {
-      //   pagePath: 'pages/mine/index',
-      //   text: '我的',
-      //   iconPath: './assets/icon/user.png',
-      //   selectedIconPath: './assets/icon/user_blue.png',
-      // },
+      {
+        pagePath: 'pages/mine/index',
+        text: '我的',
+        iconPath: './assets/icon/user.png',
+        selectedIconPath: './assets/icon/user_blue.png',
+      },
     ],
   },
 });
