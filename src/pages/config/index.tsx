@@ -104,6 +104,7 @@ export default function Index() {
     } catch (e) {
       showToast({ title: e.message || '收藏失败', icon: 'error' });
     }
+    vibrateShort();
   };
 
   /** 重置 */
