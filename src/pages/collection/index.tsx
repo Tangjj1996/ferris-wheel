@@ -51,28 +51,32 @@ export default function Index() {
     }
   };
 
-  return (
-    <View className="flex flex-col gap-y-4 p-4">
-      {configData?.map(({ key, dashboard_title }) => (
+  const renderItems = () => {
+    if (!configData?.length) {
+      return <View className="text-center text-gray-500">暂无数据</View>;
+    }
+
+    return configData?.map(({ key, dashboard_title }) => (
+      <View
+        key={key}
+        className="flex justify-between items-center p-3 bg-gray-50 rounded-sm shadow-sm"
+      >
         <View
-          key={key}
-          className="flex justify-between items-center p-3 bg-gray-50 rounded-sm shadow-sm"
+          className="font-medium text-gray-800"
+          onClick={() => handleClick(key)}
         >
-          <View
-            className="font-medium text-gray-800"
-            onClick={() => handleClick(key)}
-          >
-            {dashboard_title}
-          </View>
-          <Image
-            src={circleMinusPath}
-            style={{ width: 20, height: 20 }}
-            onClick={() => {
-              handleDelete(key);
-            }}
-          />
+          {dashboard_title}
         </View>
-      ))}
-    </View>
-  );
+        <Image
+          src={circleMinusPath}
+          style={{ width: 20, height: 20 }}
+          onClick={() => {
+            handleDelete(key);
+          }}
+        />
+      </View>
+    ));
+  };
+
+  return <View className="flex flex-col gap-y-4 p-4">{renderItems()}</View>;
 }
