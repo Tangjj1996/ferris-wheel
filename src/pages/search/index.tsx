@@ -1,54 +1,74 @@
-import { switchTab, navigateTo, useDidShow } from '@tarojs/taro';
-import { View, Input } from '@tarojs/components';
+import { switchTab, useDidShow } from '@tarojs/taro';
+import { View } from '@tarojs/components';
 import { useSearchStore } from '@/stores/search';
-import { useCommonStore } from '@/stores/common';
 import { useDashboardStore } from '@/stores/dashboard';
+import { getHotDashboardConfig } from '@/api/common/getHotDashboardConfig';
 
 export default function Index() {
-  const searchList = useSearchStore((s) => s.searchList);
-  const configData = useCommonStore((s) => s.configData);
   const setDefaultDashboard = useDashboardStore((s) => s.setDefaultDashboard);
+  const searchList = useSearchStore((s) => s.searchList);
+  const hotDashboard = useSearchStore((s) => s.hotDashboard);
 
-  useDidShow(() => {
-    useSearchStore.setState({
-      searchList:
-        configData?.map(({ dashboard_title, dashboard_type, key }) => ({
-          text: dashboard_title,
-          dashboard_type,
-          hot: false,
-          key,
-        })) ?? [],
-    });
+  useDidShow(async () => {
+    try {
+      const {
+        data: { data },
+      } = await getHotDashboardConfig();
+
+      useSearchStore.setState({
+        hotDashboard: data,
+        searchList: data.map(
+          ({
+            dashboard_title,
+            dashboard_type,
+            key,
+            dashboard_option,
+            is_hot,
+          }) => ({
+            text: dashboard_title,
+            dashboard_type,
+            is_hot,
+            key,
+            dashboard_option,
+          })
+        ),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   /**
-   * 点击搜索列表
+   * 选中
    * @param key
    */
   const handleClick = (selectedKey: string) => {
-    useSearchStore.setState({
-      selectedKey: selectedKey,
-    });
-    const selectConfigData = configData?.find(({ key }) => key === selectedKey);
-    if (selectConfigData) {
-      useDashboardStore.setState(selectConfigData);
-      setDefaultDashboard(selectConfigData);
-    }
+    const {
+      dashboard_type,
+      dashboard_title,
+      dashboard_option,
+      hot_dashboard_config_items: luck_wheel_config,
+    } = hotDashboard?.find(({ key }) => key === selectedKey) || {};
+    const options = {
+      dashboard_type,
+      dashboard_title,
+      dashboard_option,
+      luck_wheel_config,
+    };
+    useDashboardStore.setState(options);
+    setDefaultDashboard(options);
     switchTab({ url: '/pages/index/index' });
   };
 
   return (
-    <View className="flex flex-col gap-y-4">
-      {/* <View>
-        <Input onClick={() => navigateTo({ url: '/pages/nearby/index' })} />
-      </View> */}
+    <View className="flex flex-col gap-y-4 p-4">
       {searchList?.map(({ text, key }) => (
         <View
           key={key}
-          className="p-4 bg-gray-50 rounded-lg shadow-sm"
+          className="p-3 bg-gray-50 rounded-sm shadow-sm"
           onClick={() => handleClick(key)}
         >
-          <View className="text-lg font-semibold text-gray-800">{text}</View>
+          <View className="font-medium text-gray-800">{text}</View>
         </View>
       ))}
     </View>

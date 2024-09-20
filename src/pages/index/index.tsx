@@ -1,14 +1,10 @@
 import { useRef } from 'react';
 import { vibrateLong } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { Button, View } from '@tarojs/components';
 import { LuckyWheel } from '@lucky-canvas/taro/react';
-import {
-  useDashboardStore,
-  DashboardType,
-  beConfig2FeConfig,
-  DashboardOption,
-} from '@/stores/dashboard';
-import EatList from './eat-list';
+import { useDashboardStore, beConfig2FeConfig } from '@/stores/dashboard';
+import { getRandomConfig } from '@/api/common/getRandom';
+import { DashboardType, DashboardOption } from '@/enums';
 
 export default function Index() {
   const {
@@ -18,7 +14,23 @@ export default function Index() {
     dashboard_option,
   } = useDashboardStore();
   const { luck_wheel_config } = useDashboardStore(beConfig2FeConfig);
+  const setDefaultDashboard = useDashboardStore((s) => s.setDefaultDashboard);
   const lukyRef = useRef<any>();
+
+  const handleRandom = async () => {
+    const { data: wrapData } = (await getRandomConfig()) || {};
+    const { data: randomData } = wrapData || {};
+    if (randomData && randomData.length) {
+      useDashboardStore.setState({
+        luck_wheel_config: randomData!,
+        dashboard_title: '随便吃点',
+      });
+      setDefaultDashboard({
+        luck_wheel_config: randomData,
+        dashboard_title: '随便吃点',
+      });
+    }
+  };
 
   return (
     <View className="flex flex-col h-full justify-center items-center">
@@ -41,7 +53,14 @@ export default function Index() {
               vibrateLong();
             }}
           />
-          {dashboard_option === DashboardOption.eat && <EatList />}
+          {dashboard_option === DashboardOption.eat && (
+            <Button
+              onClick={handleRandom}
+              className="mt-8 border border-dashed border-blue-500 text-blue-500 bg-transparent"
+            >
+              随便吃点
+            </Button>
+          )}
         </>
       )}
     </View>

@@ -4,7 +4,6 @@ import soupPath from '@/assets/icon/soup.svg';
 import utensilsPath from '@/assets/icon/utensils.svg';
 import wheatPath from '@/assets/icon/wheat.svg';
 import snailPath from '@/assets/icon/snail.svg';
-import mapPinPath from '@/assets/icon/map-pin.svg';
 import { ConfigData } from '@/api/common/config';
 
 export enum Eat {
@@ -48,9 +47,4 @@ export const getEatConfig = (commonData: ConfigData[]) => [
     key: Eat.casual_meal,
     icon: snailPath,
   },
-  // {
-  //   text: '附近',
-  //   key: Eat.nearby,
-  //   icon: mapPinPath,
-  // },
 ];
